@@ -1,12 +1,4 @@
-DROP TABLE IF EXISTS "users";
-
-DROP TABLE IF EXISTS "characters";
-
-DROP TABLE IF EXISTS "abilities";
-
 DROP TABLE IF EXISTS "battles";
-
-DROP TABLE IF EXISTS "teams";
 
 DROP TABLE IF EXISTS "teams_characters";
 
@@ -15,6 +7,14 @@ DROP TABLE IF EXISTS "followers";
 DROP TABLE IF EXISTS "favorite_characters";
 
 DROP TABLE IF EXISTS "favorite_teams";
+
+DROP TABLE IF EXISTS "teams";
+
+DROP TABLE IF EXISTS "characters";
+
+DROP TABLE IF EXISTS "users";
+
+DROP TABLE IF EXISTS "abilities";
 
 CREATE TABLE
   "users" (
@@ -86,5 +86,5 @@ CREATE TABLE
     "character_id" INTEGER REFERENCES "characters" ("id") ON DELETE SET NULL,
     "position" SMALLINT NOT NULL,
     PRIMARY KEY ("team_id", "character_id"),
-    UNIQUE ("team_id", "position"),
+    UNIQUE ("team_id", "position")
   );
