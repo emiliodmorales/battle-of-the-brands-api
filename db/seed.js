@@ -88,7 +88,7 @@ async function createPokemon() {
   const pikachu = await createCharacter({
     name: "Pikachu",
     description: "electric mouse",
-    image: "",
+    image: "https://img.pokemondb.net/artwork/large/pikachu.jpg",
     hp: 5,
     attack: 10,
     defense: 2,
@@ -104,7 +104,8 @@ async function createPokemon() {
   const charizard = await createCharacter({
     name: "Charizard",
     description: "fire lizard",
-    image: "",
+    image:
+      "https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/detail/006.png",
     hp: 5,
     attack: 10,
     defense: 2,
@@ -120,7 +121,8 @@ async function createPokemon() {
   const bulbasaur = await createCharacter({
     name: "Bulbasaur",
     description: "grass lover",
-    image: "",
+    image:
+      "https://breedersguide.home.blog/wp-content/uploads/2019/04/bulbasaur.png",
     hp: 5,
     attack: 10,
     defense: 2,
@@ -136,7 +138,8 @@ async function createPokemon() {
   const geodude = await createCharacter({
     name: "Geodude",
     description: "floating rocks",
-    image: "",
+    image:
+      "https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/074.png",
     hp: 5,
     attack: 10,
     defense: 2,
@@ -152,7 +155,8 @@ async function createPokemon() {
   const beedrill = await createCharacter({
     name: "Beedrill",
     description: "big bee",
-    image: "",
+    image:
+      "https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/015_f2.png",
     hp: 5,
     attack: 10,
     defense: 2,
@@ -178,7 +182,8 @@ async function createDigimon() {
   const agumon = await createCharacter({
     name: "Agumon",
     description: "little trex",
-    image: "",
+    image:
+      "https://wikimon.net/images/thumb/5/5e/Agumon_survive.png/320px-Agumon_survive.png",
     hp: 5,
     attack: 10,
     defense: 2,
@@ -194,7 +199,7 @@ async function createDigimon() {
   const numemon = await createCharacter({
     name: "Numemon",
     description: "slug",
-    image: "",
+    image: "https://static.wikitide.net/netdriverwiki/9/9c/Numemon.png",
     hp: 5,
     attack: 10,
     defense: 2,
@@ -210,7 +215,8 @@ async function createDigimon() {
   const birdramon = await createCharacter({
     name: "Birdramon",
     description: "fire bird",
-    image: "",
+    image:
+      "https://cdn.weasyl.com/static/media/1d/e2/47/1de247f587279e41559069651cab31db4e5b628d54ce613069d19a0e176e5522.png",
     hp: 5,
     attack: 10,
     defense: 2,
@@ -226,7 +232,8 @@ async function createDigimon() {
   const monzaemon = await createCharacter({
     name: "Monzaemon",
     description: "teddy bear",
-    image: "",
+    image:
+      "https://static.wikia.nocookie.net/vsbattles/images/3/3e/Monzaemon_New_Century.png",
     hp: 5,
     attack: 10,
     defense: 2,
@@ -242,7 +249,8 @@ async function createDigimon() {
   const vegiemon = await createCharacter({
     name: "Vegiemon",
     description: "plant",
-    image: "",
+    image:
+      "https://static.wikia.nocookie.net/digimon/images/2/29/Vegiemon_b.jpg",
     hp: 5,
     attack: 10,
     defense: 2,
