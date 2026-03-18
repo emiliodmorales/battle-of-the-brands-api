@@ -51,3 +51,15 @@ export async function getCharacterById(id) {
   return character;
 }
 
+export async function updateCharacterById({
+  id,
+  userId,
+  name,
+  description,
+  image,
+  hp,
+  attack,
+  defense,
+  abilityId,
+}) {
+}
