@@ -54,7 +54,7 @@ async function seed() {
     winner: digimon.id,
   });
 
-  const battles = await getCharacterHistory(characters[0].id);
+  const battles = await getCharacterHistory(characters[8].id);
   console.log("Battles");
   for (const battle of battles) {
     console.log(battle);
