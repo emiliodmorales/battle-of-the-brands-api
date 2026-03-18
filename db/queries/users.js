@@ -44,3 +44,31 @@ export async function getUserById(id) {
   } = await db.query(sql, [id]);
   return user;
 }
+
+export async function getUsers() {
+  const sql = `
+  SELECT *
+  FROM users
+  `;
+  const { rows: users } = await db.query(sql);
+  return users;
+}
+
+export async function getUserHistory(id) {
+  const sql = `
+    SELECT
+      json_agg(battles) AS battle_history,
+      count(battles) AS total_battles,
+      (
+        SELECT count(battles)
+        FROM battles
+        JOIN "teams" ON teams.user_id=$1
+        WHERE winner=teams.id
+      ) AS wins
+    FROM "battles"
+    JOIN "teams" ON teams.user_id=$1
+    WHERE challenger=teams.id OR defender=teams.id
+  `;
+  const { rows: history } = await db.query(sql, [id]);
+  return history;
+}
