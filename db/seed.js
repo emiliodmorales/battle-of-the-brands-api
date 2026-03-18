@@ -8,6 +8,7 @@ import {
 import { allTeams, createTeam, getTeamHistory } from "#db/queries/teams";
 import { addCharacterToTeam } from "#db/queries/teams_characters";
 import { createBattle } from "#db/queries/battles";
+import { createAbility } from "#db/queries/abilities";
 
 await db.connect();
 await seed();
@@ -258,7 +259,7 @@ async function createDigimon() {
 }
 
 async function createAbilities() {
-  await db.insert("abilities", [
+  const abilities = [
     {
       cost: 1,
       name: "Thorn",
@@ -321,5 +322,8 @@ async function createAbilities() {
       description:
         "At the start of the turn, flip a coin. Heads: Deal double damage on the next attack. Tails: Take double damage from the next attack",
     },
-  ]);
+  ];
+  for (const ability of abilities) {
+    await createAbility(ability);
+  }
 }
