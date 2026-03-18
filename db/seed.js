@@ -15,6 +15,23 @@ await db.end();
 console.log("🌱 Database seeded.");
 
 async function seed() {
+  const pokemon = await createPokemon();
+  const digimon = await createDigimon();
+
+  const users = await getUsers();
+  console.log("Users");
+  console.log(users);
+  console.log();
+
+  const teams = await allTeams();
+  console.log("Teams");
+  console.log(teams);
+  console.log();
+
+  const characters = await getAllCharacters();
+  console.log("Characters");
+  console.log(characters);
+  console.log();
 }
 
 async function createPokemon() {
