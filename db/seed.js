@@ -1,5 +1,5 @@
 import db from "#db/client";
-import { createUser, getUsers } from "#db/queries/users";
+import { createUser, getUserHistory, getUsers } from "#db/queries/users";
 import {
   createCharacter,
   getAllCharacters,
@@ -54,16 +54,23 @@ async function seed() {
     winner: digimon.id,
   });
 
-  const battles = await getCharacterHistory(characters[8].id);
-  console.log("Battles");
-  for (const battle of battles) {
+  const characterBattles = await getCharacterHistory(characters[8].id);
+  console.log(characters[8].name + " Battles");
+  for (const battle of characterBattles) {
+    console.log(battle);
+  }
+  console.log();
+
+  const userBattles = await getUserHistory(users[0].id);
+  console.log(users[0].username + " Battles");
+  for (const battle of userBattles) {
     console.log(battle);
   }
   console.log();
 }
 
 async function createPokemon() {
-  const ash = await createUser("ash", "ketchum");
+  const ash = await createUser("Ash", "ketchum");
   const pokemonTeam = await createTeam({
     userId: ash.id,
     name: "Ash's pokemon",
@@ -153,7 +160,7 @@ async function createPokemon() {
 }
 
 async function createDigimon() {
-  const taichi = await createUser("taichi", "yagami");
+  const taichi = await createUser("Taichi", "yagami");
   const digimonTeam = await createTeam({
     userId: taichi.id,
     name: "Taichi's Digimon",
