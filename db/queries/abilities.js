@@ -6,7 +6,7 @@ export async function getAbilities() {
   return abilities;
 }
 
-export async function getAbilities(id) {
+export async function getAbilityById(id) {
   const sql = "SELECT * FROM abilities WHERE id= $1";
   const {
     rows: [abilities],
