@@ -106,3 +106,93 @@ async function createPokemon() {
 
   return pokemonTeam;
 }
+
+async function createDigimon() {
+  const taichi = await createUser("taichi", "yagami");
+  const digimonTeam = await createTeam({
+    userId: taichi.id,
+    name: "Taichi's Digimon",
+  });
+
+  const agumon = await createCharacter({
+    name: "Agumon",
+    description: "little trex",
+    image: "",
+    hp: 5,
+    attack: 10,
+    defense: 2,
+    abilityId: null,
+    userId: taichi.id,
+  });
+  await addCharacterToTeam({
+    teamId: digimonTeam.id,
+    characterId: agumon.id,
+    position: 1,
+  });
+
+  const numemon = await createCharacter({
+    name: "Numemon",
+    description: "slug",
+    image: "",
+    hp: 5,
+    attack: 10,
+    defense: 2,
+    abilityId: null,
+    userId: taichi.id,
+  });
+  await addCharacterToTeam({
+    teamId: digimonTeam.id,
+    characterId: numemon.id,
+    position: 2,
+  });
+
+  const birdramon = await createCharacter({
+    name: "Birdramon",
+    description: "fire bird",
+    image: "",
+    hp: 5,
+    attack: 10,
+    defense: 2,
+    abilityId: null,
+    userId: taichi.id,
+  });
+  await addCharacterToTeam({
+    teamId: digimonTeam.id,
+    characterId: birdramon.id,
+    position: 3,
+  });
+
+  const monzaemon = await createCharacter({
+    name: "Monzaemon",
+    description: "teddy bear",
+    image: "",
+    hp: 5,
+    attack: 10,
+    defense: 2,
+    abilityId: null,
+    userId: taichi.id,
+  });
+  await addCharacterToTeam({
+    teamId: digimonTeam.id,
+    characterId: monzaemon.id,
+    position: 4,
+  });
+
+  const vegiemon = await createCharacter({
+    name: "Vegiemon",
+    description: "plant",
+    image: "",
+    hp: 5,
+    attack: 10,
+    defense: 2,
+    abilityId: null,
+    userId: taichi.id,
+  });
+  await addCharacterToTeam({
+    teamId: digimonTeam.id,
+    characterId: vegiemon.id,
+    position: 5,
+  });
+
+  return digimonTeam;
+}
