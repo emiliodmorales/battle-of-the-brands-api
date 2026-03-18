@@ -36,9 +36,11 @@ export async function getAllCharacters() {
   const sql = `
     SELECT
       characters.*,
-      users.username
+      users.username,
+      abilities.name AS ability_name
     FROM "characters"
     LEFT OUTER JOIN "users" ON users.id = characters.user_id
+    LEFT OUTER JOIN "abilities" ON abilities.id = characters.ability_id
   `;
   const { rows: characters } = await db.query(sql);
   return characters;
@@ -48,9 +50,11 @@ export async function getCharacterById(id) {
   const sql = `
     SELECT
       characters.*,
-      users.username
+      users.username,
+      abilities.name AS ability_name
     FROM "characters"
     LEFT OUTER JOIN "users" ON users.id = characters.user_id
+    LEFT OUTER JOIN "abilities" ON abilities.id = characters.ability_id
     WHERE characters.id=$1
   `;
   const {
