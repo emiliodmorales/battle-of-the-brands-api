@@ -32,6 +32,34 @@ async function seed() {
   console.log("Characters");
   console.log(characters);
   console.log();
+
+  await createBattle({
+    challenger: pokemon.id,
+    defender: digimon.id,
+    winner: pokemon.id,
+  });
+  await createBattle({
+    challenger: pokemon.id,
+    defender: digimon.id,
+    winner: pokemon.id,
+  });
+  await createBattle({
+    challenger: pokemon.id,
+    defender: digimon.id,
+    winner: pokemon.id,
+  });
+  await createBattle({
+    challenger: pokemon.id,
+    defender: digimon.id,
+    winner: digimon.id,
+  });
+
+  const battles = await getCharacterHistory(characters[0].id);
+  console.log("Battles");
+  for (const battle of battles) {
+    console.log(battle);
+  }
+  console.log();
 }
 
 async function createPokemon() {
