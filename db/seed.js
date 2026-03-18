@@ -1,6 +1,13 @@
 import db from "#db/client";
-import { createUser } from "#db/queries/users";
-import { createCharacter } from "#db/queries/characters";
+import { createUser, getUsers } from "#db/queries/users";
+import {
+  createCharacter,
+  getAllCharacters,
+  getCharacterHistory,
+} from "#db/queries/characters";
+import { allTeams, createTeam } from "#db/queries/teams";
+import { addCharacterToTeam } from "#db/queries/teams_characters";
+import { createBattle } from "#db/queries/battles";
 
 await db.connect();
 await seed();
