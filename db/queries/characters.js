@@ -74,4 +74,15 @@ export async function updateCharacterById({
       ability_id = $9
     WHERE id=$1 AND user_id=$2
   `;
+await db.query(sql, [
+    id,
+    userId,
+    name,
+    description,
+    image,
+    hp,
+    attack,
+    defense,
+    abilityId,
+  ]);
 }
