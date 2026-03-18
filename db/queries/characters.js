@@ -62,4 +62,16 @@ export async function updateCharacterById({
   defense,
   abilityId,
 }) {
+  const sql = `
+    UPDATE "characters"
+    SET
+      name = $3,
+      description = $4,
+      image = $5,
+      hp = $6,
+      attack = $7,
+      defense = $8,
+      ability_id = $9
+    WHERE id=$1 AND user_id=$2
+  `;
 }
