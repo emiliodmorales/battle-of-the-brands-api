@@ -104,9 +104,15 @@ export async function getCharacterHistory(id) {
     SELECT
       json_agg(battles) AS battle_history,
       count(battles) AS total_battles,
-      (SELECT count(battles) FROM battles WHERE winner=$1) AS wins
+      (
+        SELECT count(battles)
+        FROM battles
+        JOIN "teams_characters" ON teams_characters.character_id=$1
+        WHERE winner=teams_characters.team_id
+      ) AS wins
     FROM "battles"
-    WHERE challenger=$1 OR defender=$1
+    JOIN "teams_characters" ON teams_characters.character_id=$1
+    WHERE challenger=teams_characters.team_id OR defender=teams_characters.team_id
   `;
   const { rows: history } = await db.query(sql, [id]);
   return history;
