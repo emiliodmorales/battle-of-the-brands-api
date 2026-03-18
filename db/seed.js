@@ -5,7 +5,7 @@ import {
   getAllCharacters,
   getCharacterHistory,
 } from "#db/queries/characters";
-import { allTeams, createTeam } from "#db/queries/teams";
+import { allTeams, createTeam, getTeamHistory } from "#db/queries/teams";
 import { addCharacterToTeam } from "#db/queries/teams_characters";
 import { createBattle } from "#db/queries/battles";
 
@@ -64,6 +64,13 @@ async function seed() {
   const userBattles = await getUserHistory(users[0].id);
   console.log(users[0].username + " Battles");
   for (const battle of userBattles) {
+    console.log(battle);
+  }
+  console.log();
+
+  const teamBattles = await getTeamHistory(digimon.id);
+  console.log(digimon.name + " Battles");
+  for (const battle of teamBattles) {
     console.log(battle);
   }
   console.log();
