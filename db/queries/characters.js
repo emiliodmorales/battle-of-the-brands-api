@@ -98,3 +98,16 @@ export async function deleteCharacterById(id) {
   } = await db.query(sql, [id]);
   return character;
 }
+
+export async function getCharacterHistory(id) {
+  const sql = `
+    SELECT
+      json_agg(battles) AS battle_history,
+      count(battles) AS total_battles,
+      (SELECT count(battles) FROM battles WHERE winner=$1) AS wins
+    FROM "battles"
+    WHERE challenger=$1 OR defender=$1
+  `;
+  const { rows: history } = await db.query(sql, [id]);
+  return history;
+}
