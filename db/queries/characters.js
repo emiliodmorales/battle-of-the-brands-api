@@ -74,7 +74,7 @@ export async function updateCharacterById({
       ability_id = $9
     WHERE id=$1 AND user_id=$2
   `;
-await db.query(sql, [
+  await db.query(sql, [
     id,
     userId,
     name,
@@ -85,4 +85,16 @@ await db.query(sql, [
     defense,
     abilityId,
   ]);
+}
+
+export async function deleteCharacterById(id) {
+  const sql = `
+    DELETE FROM "characters"
+    WHERE id=$1
+    RETURNING *
+  `;
+  const {
+    rows: [character],
+  } = await db.query(sql, [id]);
+  return character;
 }
