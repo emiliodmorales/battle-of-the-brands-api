@@ -10,6 +10,7 @@ import {
 } from "#db/queries/users";
 import requireBody from "#middleware/requireBody";
 import { createToken } from "#utils/jwt";
+import requireUser from "#middleware/requireUser";
 
 router.get("/", async (req, res) => {
   const users = await getUsers();
@@ -36,6 +37,10 @@ router
     const token = await createToken({ id: user.id });
     res.send(token);
   });
+
+router.get("/profile", requireUser, async (req, res) => {
+  res.send(req.user);
+});
 
 router.param("id", async (req, res, next, id) => {
   const user = await getUserById(id);
