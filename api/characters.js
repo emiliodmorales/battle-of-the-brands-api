@@ -62,6 +62,7 @@ router.get("/:id", async (req, res) => {
 
 router.put(
   "/:id",
+  requireUser,
   requireBody([
     "name",
     "description",
@@ -76,9 +77,11 @@ router.put(
       return res.status(401).send("Unauthorized");
 
     const { id, user_id } = req.character;
+    const { name, description, image, hp, attack, defense, abilityId } =
+      req.body;
     const char = await updateCharacterById({
       id,
-      user_id,
+      userId: user_id,
       name,
       description,
       image,
