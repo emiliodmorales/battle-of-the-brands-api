@@ -6,13 +6,14 @@ import {
   createUser,
   getUserById,
   getUserByUsernameAndPassword,
+  getUsers,
 } from "#db/queries/users";
 import requireBody from "#middleware/requireBody";
 import { createToken } from "#utils/jwt";
 
 router.get("/", async (req, res) => {
-  //TODO - Get users
-  res.send();
+  const users = await getUsers();
+  res.send(users);
 });
 
 router
