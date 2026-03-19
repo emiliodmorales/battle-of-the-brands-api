@@ -15,13 +15,29 @@ export async function createTeam({ userId, name }) {
 }
 
 export async function allTeams() {
-  const sql = "SELECT * FROM teams";
+  const sql = `SELECT teams.*,
+    (
+      SELECT json_agg(characters)
+      FROM characters
+        JOIN teams_characters
+        ON characters.id = teams_characters.character_id
+      WHERE teams_characters.team_id = teams.id
+    ) AS characters
+    FROM teams`;
   const { rows: teams } = await db.query(sql);
   return teams;
 }
 
 export async function getTeam(id) {
-  const sql = "SELECT * FROM teams WHERE id= $1";
+  const sql = `SELECT teams.*,
+    (
+      SELECT json_agg(characters)
+      FROM characters
+        JOIN teams_characters
+        ON characters.id = teams_characters.character_id
+      WHERE teams_characters.team_id = teams.id
+    ) AS characters
+    FROM teams WHERE id= $1`;
   const {
     rows: [teams],
   } = await db.query(sql, [id]);
