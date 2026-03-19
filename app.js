@@ -25,7 +25,7 @@ app.get("/", (req, res) => res.send("Hello, World!"));
 app.use("/users", usersRouter);
 app.use("/characters", charRouter);
 app.use("/teams", teamRouter);
-app.use("/ability", abilityRouter);
+app.use("/abilities", abilityRouter);
 
 app.use(handlePostgresErrors);
 app.use((err, req, res, next) => {
