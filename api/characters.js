@@ -31,6 +31,8 @@ router.post(
     "abilityId",
   ]),
   async (req, res) => {
+    const { name, description, image, hp, attack, defense, abilityId } =
+      req.body;
     const char = await createCharacter({
       name,
       description,
@@ -39,9 +41,9 @@ router.post(
       attack,
       defense,
       abilityId,
-      user_id: req.user.id,
+      userId: req.user.id,
     });
-    res.status(201).send();
+    res.status(201).send(char);
   },
 );
 
