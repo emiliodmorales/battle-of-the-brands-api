@@ -59,11 +59,6 @@ router.get("/:id", async (req, res) => {
 });
 
 // In these two, remember to check if req.user id matches the character's creator's id
-router.use(function (req, res, next) {
-  if (req.user?.id !== req.character.user_id)
-    return res.status(401).send("Unauthorized");
-  next();
-});
 
 router.put(
   "/:id",
@@ -77,6 +72,9 @@ router.put(
     "abilityId",
   ]),
   async (req, res) => {
+    if (req.user?.id !== req.character.user_id)
+      return res.status(401).send("Unauthorized");
+
     const { id, user_id } = req.character;
     const char = await updateCharacterById({
       id,
@@ -94,6 +92,9 @@ router.put(
 );
 
 router.delete("/:id", requireUser, async (req, res) => {
+  if (req.user?.id !== req.character.user_id)
+    return res.status(401).send("Unauthorized");
+
   await deleteCharacterById(req.character.id).then(() =>
     res.status(204).send(),
   );
