@@ -7,7 +7,15 @@ import {
   getUserById,
   getUserByUsernameAndPassword,
   getUsers,
+  getUserHistory,
+  getUserFollowers,
+  getUserFollowing,
 } from "#db/queries/users";
+import { getFavoriteTeams, getTeamsByUserId } from "#db/queries/teams";
+import {
+  getFavoriteCharacters,
+  getCharactersByUserId,
+} from "#db/queries/characters";
 import requireBody from "#middleware/requireBody";
 import { createToken } from "#utils/jwt";
 import requireUser from "#middleware/requireUser";
@@ -42,6 +50,16 @@ router.get("/profile", requireUser, async (req, res) => {
   res.send(req.user);
 });
 
+router.get("/favorite_teams", requireUser, async (req, res) => {
+  const faves = await getFavoriteTeams(req.user.id);
+  res.send(faves);
+});
+
+router.get("/favorite_characters", requireUser, async (req, res) => {
+  const faves = await getFavoriteCharacters(req.user.id);
+  res.send(faves);
+});
+
 router.param("id", async (req, res, next, id) => {
   const user = await getUserById(id);
   if (!user) return res.status(404).send("User not found.");
@@ -57,6 +75,26 @@ router.get("/:id", async (req, res) => {
 });
 
 router.get("/:id/history", async (req, res) => {
-  // TODO - Get history from req.aboutUser
-  res.send();
+  const history = await getUserHistory(id);
+  res.send(history);
+});
+
+router.get("/:id/teams", async (req, res) => {
+  const teams = await getTeamsByUserId(id);
+  res.send(teams);
+});
+
+router.get("/:id/characters", async (req, res) => {
+  const chars = await getCharactersByUserId(id);
+  res.send(chars);
+});
+
+router.get("/:id/followers", async (req, res) => {
+  const followers = await getUserFollowers(id);
+  res.send(followers);
+});
+
+router.get("/:id/following", async (req, res) => {
+  const following = await getUserFollowing(id);
+  res.send(following);
 });
