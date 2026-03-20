@@ -11,6 +11,7 @@ import {
   getCharacterById,
   updateCharacterById,
   deleteCharacterById,
+  getCharacterHistory,
 } from "#db/queries/characters";
 
 router.get("/", async (req, res) => {
@@ -101,4 +102,9 @@ router.delete("/:id", requireUser, async (req, res) => {
   await deleteCharacterById(req.character.id).then(() =>
     res.status(204).send(),
   );
+});
+
+router.get("/:id/history", async (req, res) => {
+  const history = await getCharacterHistory(req.character.id);
+  res.send(history);
 });
