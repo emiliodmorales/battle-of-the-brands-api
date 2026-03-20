@@ -126,6 +126,8 @@ export async function getCharacterHistory(id) {
     JOIN "teams_characters" ON teams_characters.character_id=$1
     WHERE challenger=teams_characters.team_id OR defender=teams_characters.team_id
   `;
-  const { rows: history } = await db.query(sql, [id]);
+  const {
+    rows: [history],
+  } = await db.query(sql, [id]);
   return history;
 }
