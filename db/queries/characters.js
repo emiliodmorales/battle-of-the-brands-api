@@ -114,7 +114,11 @@ export async function deleteCharacterById(id) {
 export async function getCharacterHistory(id) {
   const sql = `
     SELECT
-      json_agg(battles) AS battle_history,
+      json_agg(json_build_object(
+        'challenger', (SELECT teams FROM teams WHERE teams.id=battles.challenger),
+        'defender', (SELECT teams FROM teams WHERE teams.id=battles.defender),
+        'winner', (SELECT teams FROM teams WHERE teams.id=battles.winner)
+      )) AS battle_history,
       count(battles) AS total_battles,
       (
         SELECT count(battles)
