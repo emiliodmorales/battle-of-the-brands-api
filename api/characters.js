@@ -11,6 +11,7 @@ import {
   getCharacterById,
   updateCharacterById,
   deleteCharacterById,
+  getCharacterHistory,
 } from "#db/queries/characters";
 
 router.get("/", async (req, res) => {
@@ -56,6 +57,12 @@ router.param("id", async (req, res, next, id) => {
 
 router.get("/:id", async (req, res) => {
   res.send(req.character);
+});
+
+// Should history be protected?
+router.get("/:id", async (req, res) => {
+  const history = await getCharacterHistory(id);
+  res.send(history);
 });
 
 // In these two, remember to check if req.user id matches the character's creator's id

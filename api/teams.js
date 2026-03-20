@@ -34,9 +34,10 @@ router.get("/:id", async (req, res) => {
   res.send(req.team);
 });
 
+// Should history be protected?
 router.get("/:id/history", async (req, res) => {
-  // TODO - Get team history
-  res.send();
+  const history = await getTeamHistory(id);
+  res.send(history);
 });
 
 router.get("/:id/challenge", requireUser, async (req, res) => {
