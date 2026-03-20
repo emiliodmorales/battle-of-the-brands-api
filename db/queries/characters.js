@@ -1,5 +1,16 @@
 import db from "#db/client";
 
+// Basic character query
+const SELECT_CHARACTERS = `
+    SELECT
+      characters.*,
+      users.username,
+      abilities.name AS ability_name
+    FROM "characters"
+    LEFT OUTER JOIN "users" ON users.id = characters.user_id
+    LEFT OUTER JOIN "abilities" ON abilities.id = characters.ability_id
+    `;
+
 export async function createCharacter({
   name,
   description,
@@ -33,34 +44,29 @@ export async function createCharacter({
 }
 
 export async function getAllCharacters() {
-  const sql = `
-    SELECT
-      characters.*,
-      users.username,
-      abilities.name AS ability_name
-    FROM "characters"
-    LEFT OUTER JOIN "users" ON users.id = characters.user_id
-    LEFT OUTER JOIN "abilities" ON abilities.id = characters.ability_id
-  `;
+  const sql = SELECT_CHARACTERS;
   const { rows: characters } = await db.query(sql);
   return characters;
 }
 
 export async function getCharacterById(id) {
   const sql = `
-    SELECT
-      characters.*,
-      users.username,
-      abilities.name AS ability_name
-    FROM "characters"
-    LEFT OUTER JOIN "users" ON users.id = characters.user_id
-    LEFT OUTER JOIN "abilities" ON abilities.id = characters.ability_id
+    ${SELECT_CHARACTERS}
     WHERE characters.id=$1
   `;
   const {
     rows: [character],
   } = await db.query(sql, [id]);
   return character;
+}
+
+export async function getCharactersByUserId(id) {
+  const sql = `
+    ${SELECT_CHARACTERS}
+    WHERE characters.user_id=$1
+  `;
+  const { rows: characters } = await db.query(sql, [id]);
+  return characters;
 }
 
 export async function updateCharacterById({
@@ -134,4 +140,17 @@ export async function getCharacterHistory(id) {
     rows: [history],
   } = await db.query(sql, [id]);
   return history;
+}
+
+export async function getFavoriteCharacters(id) {
+  const sql = `
+    ${SELECT_CHARACTERS}
+    JOIN favorite_characters
+    ON favorite_characters.character_id = characters.id
+    WHERE favorite_characters.user_id = $1
+  `;
+  const {
+    rows: [character],
+  } = await db.query(sql, [id]);
+  return character;
 }

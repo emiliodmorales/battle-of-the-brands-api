@@ -1,5 +1,16 @@
 import db from "#db/client";
 
+// For functions where we want to grab the characters associated with the team as well
+const CHARACTER_SUBQUERY = `
+    (
+      SELECT json_agg(characters)
+      FROM characters
+        JOIN teams_characters
+        ON characters.id = teams_characters.character_id
+      WHERE teams_characters.team_id = teams.id
+    ) AS characters
+    `;
+
 export async function createTeam({ userId, name }) {
   const sql = `
   INSERT INTO teams
@@ -15,32 +26,25 @@ export async function createTeam({ userId, name }) {
 }
 
 export async function allTeams() {
-  const sql = `SELECT teams.*,
-    (
-      SELECT json_agg(characters)
-      FROM characters
-        JOIN teams_characters
-        ON characters.id = teams_characters.character_id
-      WHERE teams_characters.team_id = teams.id
-    ) AS characters
+  const sql = `SELECT teams.*, ${CHARACTER_SUBQUERY}
     FROM teams`;
   const { rows: teams } = await db.query(sql);
   return teams;
 }
 
 export async function getTeam(id) {
-  const sql = `SELECT teams.*,
-    (
-      SELECT json_agg(characters)
-      FROM characters
-        JOIN teams_characters
-        ON characters.id = teams_characters.character_id
-      WHERE teams_characters.team_id = teams.id
-    ) AS characters
+  const sql = `SELECT teams.*, ${CHARACTER_SUBQUERY}
     FROM teams WHERE id= $1`;
   const {
     rows: [teams],
   } = await db.query(sql, [id]);
+  return teams;
+}
+
+export async function getTeamsByUserId(id) {
+  const sql = `SELECT teams.*, ${CHARACTER_SUBQUERY}
+    FROM teams WHERE user_id= $1`;
+  const { rows: teams } = await db.query(sql, [id]);
   return teams;
 }
 
@@ -88,4 +92,14 @@ export async function getTeamHistory(id) {
   `;
   const { rows: history } = await db.query(sql, [id]);
   return history;
+}
+
+export async function getFavoriteTeams(id) {
+  const sql = `SELECT teams.*, ${CHARACTER_SUBQUERY}
+    FROM teams
+    JOIN favorite_teams
+    ON teams.id = favorite_teams.team_id
+    WHERE favorite_teams.user_id = $1`;
+  const { rows: teams } = await db.query(sql, [id]);
+  return teams;
 }
