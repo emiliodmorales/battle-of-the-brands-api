@@ -58,7 +58,7 @@ async function seed() {
 
   const characterBattles = await getCharacterHistory(characters[8].id);
   console.log(characters[8].name + " Battles");
-  for (const battle of characterBattles) {
+  for (const battle of characterBattles.battle_history) {
     console.log(battle);
   }
   console.log();
