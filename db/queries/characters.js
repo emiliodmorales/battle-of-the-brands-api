@@ -11,6 +11,23 @@ const SELECT_CHARACTERS = `
     LEFT OUTER JOIN "abilities" ON abilities.id = characters.ability_id
     `;
 
+/**
+ * Represents a character
+ * @typedef {object} characterInfo
+ * @property {string} name - The name of the character
+ * @property {string} description - A short description of the character
+ * @property {string} image - A url to an image of the character
+ * @property {number} hp - Character's health
+ * @property {number} attack - Character's damage
+ * @property {number} defense - Character's block
+ * @property {number} abilityId - Id of character's ability
+ * @property {number} userId - Id of character's creator
+ */
+/**
+ * Create a new character
+ * @param {characterInfo} characterInfo
+ * @returns the new character
+ */
 export async function createCharacter({
   name,
   description,
@@ -43,12 +60,20 @@ export async function createCharacter({
   return character;
 }
 
+/**
+ * @returns An array containing all characters
+ */
 export async function getAllCharacters() {
   const sql = SELECT_CHARACTERS;
   const { rows: characters } = await db.query(sql);
   return characters;
 }
 
+/**
+ * Get a character by its id
+ * @param {number} id - Id of the character to retrieve
+ * @returns the character with the given id
+ */
 export async function getCharacterById(id) {
   const sql = `
     ${SELECT_CHARACTERS}
@@ -60,6 +85,11 @@ export async function getCharacterById(id) {
   return character;
 }
 
+/**
+ * Get owned characters by user's id
+ * @param {number} id - Id of the user
+ * @returns an array of characters owned by the user
+ */
 export async function getCharactersByUserId(id) {
   const sql = `
     ${SELECT_CHARACTERS}
@@ -69,9 +99,12 @@ export async function getCharactersByUserId(id) {
   return characters;
 }
 
+/**
+ * Update a character with the given id
+ * @param {characterInfo} characterInfo
+ */
 export async function updateCharacterById({
   id,
-  userId,
   name,
   description,
   image,
@@ -79,6 +112,7 @@ export async function updateCharacterById({
   attack,
   defense,
   abilityId,
+  userId,
 }) {
   const sql = `
     UPDATE "characters"
@@ -105,6 +139,11 @@ export async function updateCharacterById({
   ]);
 }
 
+/**
+ * Delete a character by its id
+ * @param {number} id - The id of the character to delete
+ * @returns the deleted character
+ */
 export async function deleteCharacterById(id) {
   const sql = `
     DELETE FROM "characters"
@@ -117,6 +156,24 @@ export async function deleteCharacterById(id) {
   return character;
 }
 
+/**
+ * Represents a battle
+ * @typedef {object} battleInfo
+ * @property {number} challenger - The id of the challenging team
+ * @property {number} defender - The id of the defending team
+ * @property {number} winner - The id of the winning team
+ */
+/**
+ * @typedef {object} battleHistory
+ * @property {number} total_battles - The total number of battles participated in
+ * @property {number} wins - How many battles its team has won
+ * @property {battleInfo[]} battle_history - An array of battles participated in
+ */
+/**
+ * Get the battle history of a character by its id
+ * @param {number} id - The id of the character
+ * @returns {battleHistory} the character's battle history
+ */
 export async function getCharacterHistory(id) {
   const sql = `
     SELECT
@@ -142,6 +199,11 @@ export async function getCharacterHistory(id) {
   return history;
 }
 
+/**
+ * Get a user's favorite characters
+ * @param {number} id - id of the user
+ * @returns an array of the user's favorite characters
+ */
 export async function getFavoriteCharacters(id) {
   const sql = `
     ${SELECT_CHARACTERS}

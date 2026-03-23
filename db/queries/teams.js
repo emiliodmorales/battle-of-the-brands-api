@@ -11,6 +11,12 @@ const CHARACTER_SUBQUERY = `
     ) AS characters
     `;
 
+/**
+ * Create a new team
+ * @param {number} userId - The id of the team creator
+ * @param {string} name - The name of the team
+ * @returns the new team
+ */
 export async function createTeam({ userId, name }) {
   const sql = `
   INSERT INTO teams
@@ -25,6 +31,9 @@ export async function createTeam({ userId, name }) {
   return teams;
 }
 
+/**
+ * @returns an array containing all teams
+ */
 export async function allTeams() {
   const sql = `SELECT teams.*, ${CHARACTER_SUBQUERY}
     FROM teams`;
@@ -32,6 +41,11 @@ export async function allTeams() {
   return teams;
 }
 
+/**
+ * Get a team by id
+ * @param {number} id - Id of the team
+ * @returns the team with the given id
+ */
 export async function getTeam(id) {
   const sql = `SELECT teams.*, ${CHARACTER_SUBQUERY}
     FROM teams WHERE id= $1`;
@@ -41,6 +55,11 @@ export async function getTeam(id) {
   return teams;
 }
 
+/**
+ * Get teams belonging to a user
+ * @param {number} id - The id of the user
+ * @returns an array containing teams created by the given user
+ */
 export async function getTeamsByUserId(id) {
   const sql = `SELECT teams.*, ${CHARACTER_SUBQUERY}
     FROM teams WHERE user_id= $1`;
@@ -48,6 +67,13 @@ export async function getTeamsByUserId(id) {
   return teams;
 }
 
+/**
+ * Update a team by its id
+ * @param {number} id - The id of the team to update
+ * @param {number} userId - The id of the user
+ * @param {string} name - The name of the team
+ * @returns The updated team
+ */
 export async function updateTeam({ id, userId, name }) {
   const sql = `
   UPDATE teams
@@ -64,6 +90,11 @@ export async function updateTeam({ id, userId, name }) {
   return teams;
 }
 
+/**
+ * Delete a team by its id
+ * @param {number} id - The id of the team
+ * @returns the deleted team
+ */
 export async function deleteTeam(id) {
   const sql = `
   DELETE FROM teams
@@ -77,6 +108,24 @@ export async function deleteTeam(id) {
   return teams;
 }
 
+/**
+ * Represents a battle
+ * @typedef {object} battleInfo
+ * @property {number} challenger - The id of the challenging team
+ * @property {number} defender - The id of the defending team
+ * @property {number} winner - The id of the winning team
+ */
+/**
+ * @typedef {object} battleHistory
+ * @property {number} total_battles - The total number of battles participated in
+ * @property {number} wins - How many battles its team has won
+ * @property {battleInfo[]} battle_history - An array of battles participated in
+ */
+/**
+ * Get the battle history of a team by its id
+ * @param {number} id - The id of the team
+ * @returns {battleHistory} the team's battle history
+ */
 export async function getTeamHistory(id) {
   const sql = `
     SELECT

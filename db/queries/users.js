@@ -1,6 +1,12 @@
 import db from "#db/client";
 import bcrypt from "bcrypt";
 
+/**
+ * Create a new user
+ * @param {string} username - The desired username
+ * @param {string} password - An unencrypted password
+ * @returns the new user
+ */
 export async function createUser(username, password) {
   const sql = `
   INSERT INTO users
@@ -16,6 +22,12 @@ export async function createUser(username, password) {
   return user;
 }
 
+/**
+ * Get a user by their credentials
+ * @param {string} username - the user's name
+ * @param {string} password - the user's unencrypted password
+ * @returns the user with the given credentials
+ */
 export async function getUserByUsernameAndPassword(username, password) {
   const sql = `
   SELECT *
@@ -33,6 +45,11 @@ export async function getUserByUsernameAndPassword(username, password) {
   return user;
 }
 
+/**
+ * Get a user by their id
+ * @param {number} id - the user's id
+ * @returns the user with the given id
+ */
 export async function getUserById(id) {
   const sql = `
   SELECT *
@@ -45,6 +62,9 @@ export async function getUserById(id) {
   return user;
 }
 
+/**
+ * @returns an array containing all users
+ */
 export async function getUsers() {
   const sql = `
   SELECT *
@@ -54,6 +74,24 @@ export async function getUsers() {
   return users;
 }
 
+/**
+ * Represents a battle
+ * @typedef {object} battleInfo
+ * @property {number} challenger - The id of the challenging team
+ * @property {number} defender - The id of the defending team
+ * @property {number} winner - The id of the winning team
+ */
+/**
+ * @typedef {object} battleHistory
+ * @property {number} total_battles - The total number of battles participated in
+ * @property {number} wins - How many battles its team has won
+ * @property {battleInfo[]} battle_history - An array of battles participated in
+ */
+/**
+ * Get the battle history of a user by their id
+ * @param {number} id - The id of the user
+ * @returns {battleHistory} the user's battle history
+ */
 export async function getUserHistory(id) {
   const sql = `
     SELECT
@@ -73,7 +111,9 @@ export async function getUserHistory(id) {
   return history;
 }
 
-/** Gets everyone who FOLLOWS the user */
+/**
+ * @returns everyone who FOLLOWS the user
+ */
 export async function getUserFollowers(id) {
   const sql = `
     SELECT *
@@ -86,7 +126,9 @@ export async function getUserFollowers(id) {
   return users;
 }
 
-/** Gets everybody who the USER follows */
+/**
+ * @returns everybody who the USER follows
+ */
 export async function getUserFollowing(id) {
   const sql = `
     SELECT *
