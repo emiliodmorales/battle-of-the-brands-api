@@ -1,6 +1,7 @@
 import db from "#db/client";
 import { createUser, getUserHistory, getUsers } from "#db/queries/users";
 import {
+  addFavoriteCharacter,
   createCharacter,
   getAllCharacters,
   getCharacterHistory,
@@ -100,6 +101,7 @@ async function createPokemon() {
     characterId: pikachu.id,
     position: 1,
   });
+  await addFavoriteCharacter(ash.id, pikachu.id);
 
   const charizard = await createCharacter({
     name: "Charizard",
