@@ -72,3 +72,29 @@ export async function getUserHistory(id) {
   const { rows: history } = await db.query(sql, [id]);
   return history;
 }
+
+/** Gets everyone who FOLLOWS the user */
+export async function getUserFollowers(id) {
+  const sql = `
+    SELECT *
+    FROM users
+    JOIN followers
+    ON users.id = followers.follower
+    WHERE followers.following = $1
+  `;
+  const { rows: users } = await db.query(sql, [id]);
+  return users;
+}
+
+/** Gets everybody who the USER follows */
+export async function getUserFollowing(id) {
+  const sql = `
+    SELECT *
+    FROM users
+    JOIN followers
+    ON users.id = followers.following
+    WHERE followers.follower = $1
+  `;
+  const { rows: users } = await db.query(sql, [id]);
+  return users;
+}
