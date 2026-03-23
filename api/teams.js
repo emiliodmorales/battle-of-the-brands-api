@@ -11,6 +11,7 @@ import {
   getTeam,
   updateTeam,
   deleteTeam,
+  getTeamHistory,
 } from "#db/queries/teams";
 
 router.get("/", async (req, res) => {
@@ -34,9 +35,8 @@ router.get("/:id", async (req, res) => {
   res.send(req.team);
 });
 
-// Should history be protected?
 router.get("/:id/history", async (req, res) => {
-  const history = await getTeamHistory(id);
+  const history = await getTeamHistory(req.id);
   res.send(history);
 });
 
