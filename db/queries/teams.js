@@ -48,7 +48,7 @@ export async function allTeams() {
 export async function getTeam(id) {
   const sql = `SELECT teams.*,
     ${CHARACTER_SUBQUERY},
-    users.name AS username
+    users.username AS username
     FROM teams
     JOIN users ON teams.user_id = users.id
     WHERE teams.id= $1`;
