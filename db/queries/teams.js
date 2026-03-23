@@ -142,7 +142,9 @@ export async function getTeamHistory(id) {
     FROM "battles"
     WHERE challenger=$1 OR defender=$1
   `;
-  const { rows: history } = await db.query(sql, [id]);
+  const {
+    rows: [history],
+  } = await db.query(sql, [id]);
   return history;
 }
 
