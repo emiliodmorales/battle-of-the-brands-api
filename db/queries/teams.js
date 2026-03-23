@@ -10,7 +10,6 @@ const CHARACTER_SUBQUERY = `
       WHERE teams_characters.team_id = teams.id
     ) AS characters
     `;
-
 /**
  * Create a new team
  * @param {number} userId - The id of the team creator
@@ -47,8 +46,12 @@ export async function allTeams() {
  * @returns the team with the given id
  */
 export async function getTeam(id) {
-  const sql = `SELECT teams.*, ${CHARACTER_SUBQUERY}
-    FROM teams WHERE id= $1`;
+  const sql = `SELECT teams.*,
+    ${CHARACTER_SUBQUERY},
+    users.name AS username
+    FROM teams
+    JOIN users ON teams.user_id = users.id
+    WHERE teams.id= $1`;
   const {
     rows: [teams],
   } = await db.query(sql, [id]);
