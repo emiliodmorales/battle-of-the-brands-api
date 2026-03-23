@@ -211,8 +211,34 @@ export async function getFavoriteCharacters(id) {
     ON favorite_characters.character_id = characters.id
     WHERE favorite_characters.user_id = $1
   `;
-  const {
-    rows: [character],
-  } = await db.query(sql, [id]);
-  return character;
+  const { rows: characters } = await db.query(sql, [id]);
+  return characters;
+}
+
+/**
+ * Favorite a character
+ * @param {number} userId - The user's id
+ * @param {number} characterId - The character's id
+ */
+export async function addFavoriteCharacter(userId, characterId) {
+  const sql = `
+    INSERT INTO "favorite_characters"
+      (user_id, character_id)
+    VALUES
+      ($1, $2)
+  `;
+  await db.query(sql, [userId, characterId]);
+}
+
+/**
+ * Unfavorite a character
+ * @param {number} userId - The user's id
+ * @param {number} characterId - The character's id
+ */
+export async function removeFavoriteCharacter(userId, characterId) {
+  const sql = `
+    DELETE FROM "favorite_characters"
+    WHERE user_id = $1 AND character_id = $2
+  `;
+  await db.query(sql, [userId, characterId]);
 }
