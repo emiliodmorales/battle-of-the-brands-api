@@ -217,11 +217,11 @@ export async function getFavoriteCharacters(id) {
 
 /**
  * Check if a user has favorited a character
- * @param {number} characterId - The character's id
  * @param {number} userId - The user's id
+ * @param {number} characterId - The character's id
  * @returns Whether the character is a favorite
  */
-export async function getIsFavoriteCharacter(characterId, userId) {
+export async function getIsFavoriteCharacter(userId, characterId) {
   const sql = `
     SELECT * FROM "favorite_characters"
     WHERE favorite_characters.user_id = $1
