@@ -15,6 +15,9 @@ import { getFavoriteTeams, getTeamsByUserId } from "#db/queries/teams";
 import {
   getFavoriteCharacters,
   getCharactersByUserId,
+  addFavoriteCharacter,
+  removeFavoriteCharacter,
+  getIsFavoriteCharacter,
 } from "#db/queries/characters";
 import requireBody from "#middleware/requireBody";
 import { createToken } from "#utils/jwt";
@@ -59,6 +62,34 @@ router.get("/favorite_characters", requireUser, async (req, res) => {
   const faves = await getFavoriteCharacters(req.user.id);
   res.send(faves);
 });
+
+router.get("/favorite_characters/:id", requireUser, async (req, res) => {
+  const { id } = req.params;
+  const fave = await getIsFavoriteCharacter(req.user.id, id);
+  res.send(fave);
+});
+
+router.post(
+  "/favorite_characters",
+  requireBody(["id"]),
+  requireUser,
+  async (req, res) => {
+    const { id } = req.body;
+    await addFavoriteCharacter(req.user.id, id);
+    res.sendStatus(201);
+  },
+);
+
+router.delete(
+  "/favorite_characters",
+  requireBody(["id"]),
+  requireUser,
+  async (req, res) => {
+    const { id } = req.body;
+    await removeFavoriteCharacter(req.user.id, id);
+    res.sendStatus(204);
+  },
+);
 
 router.param("id", async (req, res, next, id) => {
   const user = await getUserById(id);
