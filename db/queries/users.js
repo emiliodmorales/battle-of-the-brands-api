@@ -107,7 +107,9 @@ export async function getUserHistory(id) {
     JOIN "teams" ON teams.user_id=$1
     WHERE challenger=teams.id OR defender=teams.id
   `;
-  const { rows: history } = await db.query(sql, [id]);
+  const {
+    rows: [history],
+  } = await db.query(sql, [id]);
   return history;
 }
 
