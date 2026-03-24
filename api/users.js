@@ -10,6 +10,7 @@ import {
   getUserHistory,
   getUserFollowers,
   getUserFollowing,
+  addFollower,
 } from "#db/queries/users";
 import { getFavoriteTeams, getTeamsByUserId } from "#db/queries/teams";
 import {
@@ -128,4 +129,9 @@ router.get("/:id/followers", async (req, res) => {
 router.get("/:id/following", async (req, res) => {
   const following = await getUserFollowing(req.aboutUser.id);
   res.send(following);
+});
+
+router.post("/:id/following", requireUser, async (req, res) => {
+  await addFollower(req.user.id, req.aboutUser.id);
+  res.sendStatus(201);
 });
