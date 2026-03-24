@@ -25,5 +25,12 @@ PostgreSQL for the database
 
 ## Architecture
 
-The api folder contains our api endpoints.
-The db folder contains the db setup and queries.
+### Folder Structure
+
+- api - api routes
+- db - database setup
+- db/queries - database queries
+- middleware - express middleware functions
+- utils - js utilities
+
+- app.js - Express.js app
