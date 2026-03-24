@@ -63,9 +63,9 @@ router.get("/favorite_characters", requireUser, async (req, res) => {
   res.send(faves);
 });
 
-router.get("/favorite_characters/:id", requireUser, async (req, res) => {
-  const { id } = req.params;
-  const fave = await getIsFavoriteCharacter(req.user.id, id);
+router.get("/favorite_characters/:charId", requireUser, async (req, res) => {
+  const { charId } = req.params;
+  const fave = await getIsFavoriteCharacter(req.user.id, charId);
   res.send(fave);
 });
 
