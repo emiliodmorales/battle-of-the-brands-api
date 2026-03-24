@@ -147,6 +147,17 @@ export async function getUserFollowing(id) {
   return users;
 }
 
+export async function getUserIsFollowing(followerId, followingId) {
+  const sql = `
+    SELECT FROM followers
+    WHERE follower = $1 AND following = $2
+  `;
+  const {
+    rows: [user],
+  } = await db.query(sql, [followerId, followingId]);
+  return user !== undefined;
+}
+
 export async function addFollower(followerId, followingId) {
   const sql = `
     INSERT INTO followers
