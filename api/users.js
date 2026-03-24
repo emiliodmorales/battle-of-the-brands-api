@@ -106,26 +106,26 @@ router.get("/:id", async (req, res) => {
 });
 
 router.get("/:id/history", async (req, res) => {
-  const history = await getUserHistory(id);
+  const history = await getUserHistory(req.aboutUser.id);
   res.send(history);
 });
 
 router.get("/:id/teams", async (req, res) => {
-  const teams = await getTeamsByUserId(id);
+  const teams = await getTeamsByUserId(req.aboutUser.id);
   res.send(teams);
 });
 
 router.get("/:id/characters", async (req, res) => {
-  const chars = await getCharactersByUserId(id);
+  const chars = await getCharactersByUserId(req.aboutUser.id);
   res.send(chars);
 });
 
 router.get("/:id/followers", async (req, res) => {
-  const followers = await getUserFollowers(id);
+  const followers = await getUserFollowers(req.aboutUser.id);
   res.send(followers);
 });
 
 router.get("/:id/following", async (req, res) => {
-  const following = await getUserFollowing(id);
+  const following = await getUserFollowing(req.aboutUser.id);
   res.send(following);
 });
