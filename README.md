@@ -20,7 +20,8 @@ Users can favorite characters and teams to save for later. They can also follow 
 
 ## Tech Stack
 
-We use Express.js for the api app.
+Express.js for the api app
+PostgreSQL for the database
 
 ## Architecture
 
