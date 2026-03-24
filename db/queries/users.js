@@ -95,7 +95,11 @@ export async function getUsers() {
 export async function getUserHistory(id) {
   const sql = `
     SELECT
-      json_agg(battles) AS battle_history,
+      json_agg(json_build_object(
+        'challenger', (SELECT teams FROM teams WHERE teams.id=battles.challenger),
+        'defender', (SELECT teams FROM teams WHERE teams.id=battles.defender),
+        'winner', (SELECT teams FROM teams WHERE teams.id=battles.winner)
+      )) AS battle_history,
       count(battles) AS total_battles,
       (
         SELECT count(battles)
@@ -107,7 +111,9 @@ export async function getUserHistory(id) {
     JOIN "teams" ON teams.user_id=$1
     WHERE challenger=teams.id OR defender=teams.id
   `;
-  const { rows: history } = await db.query(sql, [id]);
+  const {
+    rows: [history],
+  } = await db.query(sql, [id]);
   return history;
 }
 

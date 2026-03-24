@@ -66,14 +66,14 @@ async function seed() {
 
   const userBattles = await getUserHistory(users[0].id);
   console.log(users[0].username + " Battles");
-  for (const battle of userBattles) {
+  for (const battle of userBattles.battle_history) {
     console.log(battle);
   }
   console.log();
 
   const teamBattles = await getTeamHistory(digimon.id);
   console.log(digimon.name + " Battles");
-  for (const battle of teamBattles) {
+  for (const battle of teamBattles.battle_history) {
     console.log(battle);
   }
   console.log();
