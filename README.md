@@ -34,3 +34,7 @@ Users can favorite characters and teams to save for later. They can also follow 
 - utils - js utilities
 
 - app.js - Express.js app
+
+### System Design
+
+The express app has abilities, characters, teams, and users routes. It allows for the creation of characters, teams, and users. The abilities table is only used to store information.
