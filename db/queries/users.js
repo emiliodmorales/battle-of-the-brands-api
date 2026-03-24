@@ -156,3 +156,11 @@ export async function addFollower(followerId, followingId) {
   `;
   await db.query(sql, [followerId, followingId]);
 }
+
+export async function removeFollower(followerId, followingId) {
+  const sql = `
+    DELETE FROM followers
+    WHERE follower = $1 AND following = $2
+  `;
+  await db.query(sql, [followerId, followingId]);
+}

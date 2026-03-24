@@ -11,6 +11,7 @@ import {
   getUserFollowers,
   getUserFollowing,
   addFollower,
+  removeFollower,
 } from "#db/queries/users";
 import { getFavoriteTeams, getTeamsByUserId } from "#db/queries/teams";
 import {
@@ -134,4 +135,9 @@ router.get("/:id/following", async (req, res) => {
 router.post("/:id/following", requireUser, async (req, res) => {
   await addFollower(req.user.id, req.aboutUser.id);
   res.sendStatus(201);
+});
+
+router.delete("/:id/following", requireUser, async (req, res) => {
+  await removeFollower(req.user.id, req.aboutUser.id);
+  res.sendStatus(204);
 });
