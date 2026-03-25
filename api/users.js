@@ -7,7 +7,6 @@ import {
   getUserById,
   getUserByUsernameAndPassword,
   getUsers,
-  getUserHistory,
   getUserFollowers,
   getUserFollowing,
   addFollower,
@@ -25,6 +24,7 @@ import {
 import requireBody from "#middleware/requireBody";
 import { createToken } from "#utils/jwt";
 import requireUser from "#middleware/requireUser";
+import { getUserHistory } from "#db/queries/battles";
 
 router.get("/", async (req, res) => {
   const users = await getUsers();

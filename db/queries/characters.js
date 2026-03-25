@@ -171,48 +171,6 @@ export async function deleteCharacterById(id) {
 }
 
 /**
- * Get the battle history of a character by its id
- * @param {number} id - The id of the character
- * @returns {BattleHistory} the character's battle history
- */
-export async function getCharacterHistory(id) {
-  const sql = `
-    SELECT
-      json_agg(json_build_object(
-        'challenger', (SELECT teams FROM teams WHERE teams.id=battles.challenger),
-        'defender', (SELECT teams FROM teams WHERE teams.id=battles.defender),
-        'winner', (SELECT teams FROM teams WHERE teams.id=battles.winner)
-      )) AS battle_history,
-      count(battles) AS total_battles,
-      (
-        SELECT count(battles)
-        FROM battles
-        JOIN "teams_characters" ON teams_characters.character_id=$1
-        WHERE winner=teams_characters.team_id
-      ) AS wins,
-      (
-        SELECT count(battles)
-        FROM battles
-        JOIN "teams_characters" ON teams_characters.character_id=$1
-        WHERE (challenger=teams_characters.team_id OR defender=teams_characters.team_id) AND winner!=teams_characters.team_id
-      ) AS losses,
-      (
-        SELECT count(battles)
-        FROM battles
-        JOIN "teams_characters" ON teams_characters.character_id=$1
-        WHERE (challenger=teams_characters.team_id OR defender=teams_characters.team_id) AND winner IS NULL
-      ) AS draws
-    FROM "battles"
-    JOIN "teams_characters" ON teams_characters.character_id=$1
-    WHERE challenger=teams_characters.team_id OR defender=teams_characters.team_id
-  `;
-  const {
-    rows: [history],
-  } = await db.query(sql, [id]);
-  return history;
-}
-
-/**
  * Get a user's favorite characters
  * @param {number} id - id of the user
  * @returns an array of the user's favorite characters
