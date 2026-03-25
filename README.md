@@ -20,9 +20,21 @@ Users can favorite characters and teams to save for later. They can also follow 
 
 ## Tech Stack
 
-We use Express.js for the api app.
+- Express.js for the api app
+- PostgreSQL for the database
 
 ## Architecture
 
-The api folder contains our api endpoints.
-The db folder contains the db setup and queries.
+### Folder Structure
+
+- api - api routes
+- db - database setup
+- db/queries - database queries
+- middleware - express middleware functions
+- utils - js utilities
+
+- app.js - Express.js app
+
+### System Design
+
+The express app has abilities, characters, teams, and users routes. It allows for the creation of characters, teams, and users. The abilities table is only used to store information.
