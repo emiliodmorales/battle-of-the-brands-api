@@ -107,7 +107,19 @@ export async function getUserHistory(id) {
         FROM battles
         JOIN "teams" ON teams.user_id=$1
         WHERE winner=teams.id
-      ) AS wins
+      ) AS wins,
+      (
+        SELECT count(battles)
+        FROM battles
+        JOIN "teams_characters" ON teams_characters.character_id=$1
+        WHERE (challenger=teams_characters.team_id OR defender=teams_characters.team_id) AND winner!=teams_characters.team_id
+      ) AS losses,
+      (
+        SELECT count(battles)
+        FROM battles
+        JOIN "teams_characters" ON teams_characters.character_id=$1
+        WHERE (challenger=teams_characters.team_id OR defender=teams_characters.team_id) AND winner IS NULL
+      ) AS draws
     FROM "battles"
     JOIN "teams" ON teams.user_id=$1
     WHERE challenger=teams.id OR defender=teams.id

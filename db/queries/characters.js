@@ -189,7 +189,19 @@ export async function getCharacterHistory(id) {
         FROM battles
         JOIN "teams_characters" ON teams_characters.character_id=$1
         WHERE winner=teams_characters.team_id
-      ) AS wins
+      ) AS wins,
+      (
+        SELECT count(battles)
+        FROM battles
+        JOIN "teams_characters" ON teams_characters.character_id=$1
+        WHERE (challenger=teams_characters.team_id OR defender=teams_characters.team_id) AND winner!=teams_characters.team_id
+      ) AS losses,
+      (
+        SELECT count(battles)
+        FROM battles
+        JOIN "teams_characters" ON teams_characters.character_id=$1
+        WHERE (challenger=teams_characters.team_id OR defender=teams_characters.team_id) AND winner IS NULL
+      ) AS draws
     FROM "battles"
     JOIN "teams_characters" ON teams_characters.character_id=$1
     WHERE challenger=teams_characters.team_id OR defender=teams_characters.team_id
