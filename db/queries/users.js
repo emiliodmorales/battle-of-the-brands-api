@@ -2,24 +2,23 @@ import db from "#db/client";
 import bcrypt from "bcrypt";
 
 /**
- * Represents a battle
- * @typedef {object} BattleInfo
- * @property {number} challenger - The id of the challenging team
- * @property {number} defender - The id of the defending team
- * @property {number} winner - The id of the winning team
- */
-/**
- * @typedef {object} BattleHistory
- * @property {number} total_battles - The total number of battles participated in
- * @property {number} wins - How many battles its team has won
- * @property {BattleInfo[]} battle_history - An array of battles participated in
+ * @typedef {object} UserInfo
+ * @property {string} username
+ * @property {string} password
  */
 
 /**
- * Create a new user
- * @param {string} username - The desired username
- * @param {string} password - An unencrypted password
- * @returns the new user
+ * @typedef {object} ID
+ * @property {number} id
+ */
+
+/**
+ * @typedef {UserInfo & ID} User
+ */
+
+/**
+ * @param {UserInfo}
+ * @returns {Promise<User>} the new user
  */
 export async function createUser(username, password) {
   const sql = `
@@ -37,10 +36,8 @@ export async function createUser(username, password) {
 }
 
 /**
- * Get a user by their credentials
- * @param {string} username - the user's name
- * @param {string} password - the user's unencrypted password
- * @returns the user with the given credentials
+ * @param {UserInfo}
+ * @returns {Promise<User>} the user with the given credentials
  */
 export async function getUserByUsernameAndPassword(username, password) {
   const sql = `
@@ -60,9 +57,8 @@ export async function getUserByUsernameAndPassword(username, password) {
 }
 
 /**
- * Get a user by their id
  * @param {number} id - the user's id
- * @returns the user with the given id
+ * @returns {Promise<User>} the user with the given id
  */
 export async function getUserById(id) {
   const sql = `
@@ -77,7 +73,7 @@ export async function getUserById(id) {
 }
 
 /**
- * @returns an array containing all users
+ * @returns {Promise<User[]>} an array containing all users
  */
 export async function getUsers() {
   const sql = `
@@ -89,7 +85,7 @@ export async function getUsers() {
 }
 
 /**
- * @returns everyone who FOLLOWS the user
+ * @returns {Promise<User[]>} everyone who FOLLOWS the user
  */
 export async function getUserFollowers(id) {
   const sql = `
@@ -104,7 +100,7 @@ export async function getUserFollowers(id) {
 }
 
 /**
- * @returns everybody who the USER follows
+ * @returns {Promise<User[]>} everybody who the USER follows
  */
 export async function getUserFollowing(id) {
   const sql = `
@@ -118,31 +114,44 @@ export async function getUserFollowing(id) {
   return users;
 }
 
-export async function getUserIsFollowing(followerId, followingId) {
+/**
+ * @param {number} followerId user id of the follower
+ * @param {number} userId user id being followed
+ * @returns {Promise<boolen>} whether the follower is following the user
+ */
+export async function getUserIsFollowing(followerId, userId) {
   const sql = `
     SELECT FROM followers
     WHERE follower = $1 AND following = $2
   `;
   const {
     rows: [user],
-  } = await db.query(sql, [followerId, followingId]);
+  } = await db.query(sql, [followerId, userId]);
   return user !== undefined;
 }
 
-export async function addFollower(followerId, followingId) {
+/**
+ * @param {number} followerId user id of the follower
+ * @param {number} userId user id being followed
+ */
+export async function addFollower(followerId, userId) {
   const sql = `
     INSERT INTO followers
       (follower, following)
     VALUES
       ($1, $2)
   `;
-  await db.query(sql, [followerId, followingId]);
+  await db.query(sql, [followerId, userId]);
 }
 
-export async function removeFollower(followerId, followingId) {
+/**
+ * @param {number} followerId user id of the follower
+ * @param {number} userId user id being followed
+ */
+export async function removeFollower(followerId, userId) {
   const sql = `
     DELETE FROM followers
     WHERE follower = $1 AND following = $2
   `;
-  await db.query(sql, [followerId, followingId]);
+  await db.query(sql, [followerId, userId]);
 }

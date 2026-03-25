@@ -1,17 +1,59 @@
 import db from "#db/client";
 
 /**
- * Represents a battle
- * @typedef {object} BattleInfo
- * @property {number} challenger - The id of the challenging team
- * @property {number} defender - The id of the defending team
- * @property {number} winner - The id of the winning team
+ * @typedef {object} BattleHistory
+ * @property {BattleTeam[]} battle_history
+ * @property {number} total_battles
+ * @property {number} wins
+ * @property {number} losses
+ * @property {number} draws
  */
 
 /**
+ * @typedef {object} BattleTeam
+ * @property {Team} challenger
+ * @property {Team} defender
+ * @property {Team} winner
+ */
+
+/**
+ * @typedef {object} Team
+ * @property {number} id
+ * @property {number} userId
+ * @property {string} name
+ */
+
+/**
+ * @typedef {object} Battle
+ * @property {number} challenger
+ * @property {number} defender
+ * @property {number} winner
+ */
+
+/**
+ * @typedef {object} ID
+ * @property {number} id
+ */
+
+/**
+ * @typedef {BattleInfo & ID} Battle
+ */
+
+/**
+ * Creates a BattleHistory
+ */
+const BATTLE_HISTORY_FRAGMENT = `
+  json_agg(json_build_object(
+    'challenger', (SELECT teams FROM teams WHERE teams.id=battles.challenger),
+    'defender', (SELECT teams FROM teams WHERE teams.id=battles.defender),
+    'winner', (SELECT teams FROM teams WHERE teams.id=battles.winner)
+  )) AS battle_history
+ `;
+
+/**
  * Create a new battle
- * @param {BattleInfo} battleInfo
- * @returns the new battle
+ * @param {BattleInfo}
+ * @returns {Promise<Battle>} The new battle
  */
 export async function createBattle({ challenger, defender, winner }) {
   const sql = `
@@ -68,7 +110,7 @@ export async function getCharacterHistory(id) {
 /**
  * Get the battle history of a team by its id
  * @param {number} id - The id of the team
- * @returns {BattleHistory} the team's battle history
+ * @returns {Promise<BattleHistory>} the team's battle history
  */
 export async function getTeamHistory(id) {
   const sql = `
@@ -104,7 +146,7 @@ export async function getTeamHistory(id) {
 /**
  * Get the battle history of a user by their id
  * @param {number} id - The id of the user
- * @returns {BattleHistory} the user's battle history
+ * @returns {Promise<BattleHistory>} the user's battle history
  */
 export async function getUserHistory(id) {
   const sql = `

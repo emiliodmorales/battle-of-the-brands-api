@@ -1,6 +1,8 @@
 import db from "#db/client";
 
-// Basic character query
+/**
+ * Basic character query
+ */
 const CHARACTERS_FRAGMENT = `
     SELECT
       characters.*,
@@ -12,35 +14,29 @@ const CHARACTERS_FRAGMENT = `
     `;
 
 /**
- * Represents a character
  * @typedef {object} CharacterInfo
- * @property {string} name - The name of the character
- * @property {string} description - A short description of the character
- * @property {string} image - A url to an image of the character
- * @property {number} hp - Character's health
- * @property {number} attack - Character's damage
- * @property {number} defense - Character's block
- * @property {number} abilityId - Id of character's ability
- * @property {number} userId - Id of character's creator
- */
-/**
- * Represents a battle
- * @typedef {object} BattleInfo
- * @property {number} challenger - The id of the challenging team
- * @property {number} defender - The id of the defending team
- * @property {number} winner - The id of the winning team
- */
-/**
- * @typedef {object} BattleHistory
- * @property {number} total_battles - The total number of battles participated in
- * @property {number} wins - How many battles its team has won
- * @property {BattleInfo[]} battle_history - An array of battles participated in
+ * @property {string} name
+ * @property {string} description
+ * @property {string} image
+ * @property {number} hp
+ * @property {number} attack
+ * @property {number} defense
+ * @property {number} abilityId
+ * @property {number} userId
  */
 
 /**
- * Create a new character
- * @param {CharacterInfo} characterInfo
- * @returns the new character
+ * @typedef {object} ID
+ * @property {number} id
+ */
+
+/**
+ * @typedef {CharacterInfo & ID} Character
+ */
+
+/**
+ * @param {CharacterInfo}
+ * @returns {Promise<Character>} the new character
  */
 export async function createCharacter({
   name,
@@ -75,7 +71,7 @@ export async function createCharacter({
 }
 
 /**
- * @returns An array containing all characters
+ * @returns {Promise<Character[]>} An array containing all characters
  */
 export async function getAllCharacters() {
   const sql = CHARACTERS_FRAGMENT;
@@ -84,9 +80,8 @@ export async function getAllCharacters() {
 }
 
 /**
- * Get a character by its id
- * @param {number} id - Id of the character to retrieve
- * @returns the character with the given id
+ * @param {number} id Id of the character to retrieve
+ * @returns {Promise<Character>} the character with the given id
  */
 export async function getCharacterById(id) {
   const sql = `
@@ -100,9 +95,8 @@ export async function getCharacterById(id) {
 }
 
 /**
- * Get owned characters by user's id
- * @param {number} id - Id of the user
- * @returns an array of characters owned by the user
+ * @param {number} id Id of the user
+ * @returns {Promise<Character[]>} an array of characters owned by the user
  */
 export async function getCharactersByUserId(id) {
   const sql = `
@@ -114,8 +108,7 @@ export async function getCharactersByUserId(id) {
 }
 
 /**
- * Update a character with the given id
- * @param {CharacterInfo} characterInfo
+ * @param {Character} characterInfo
  */
 export async function updateCharacterById({
   id,
@@ -154,9 +147,8 @@ export async function updateCharacterById({
 }
 
 /**
- * Delete a character by its id
- * @param {number} id - The id of the character to delete
- * @returns the deleted character
+ * @param {number} id
+ * @returns {Promise<Character>}
  */
 export async function deleteCharacterById(id) {
   const sql = `
@@ -172,8 +164,8 @@ export async function deleteCharacterById(id) {
 
 /**
  * Get a user's favorite characters
- * @param {number} id - id of the user
- * @returns an array of the user's favorite characters
+ * @param {number} id id of the user
+ * @returns {Promise<Character[]>} an array of the user's favorite characters
  */
 export async function getFavoriteCharacters(id) {
   const sql = `
@@ -188,9 +180,9 @@ export async function getFavoriteCharacters(id) {
 
 /**
  * Check if a user has favorited a character
- * @param {number} userId - The user's id
- * @param {number} characterId - The character's id
- * @returns Whether the character is a favorite
+ * @param {number} userId The user's id
+ * @param {number} characterId The character's id
+ * @returns {Promise<boolean>} Whether the character is a favorite
  */
 export async function getIsFavoriteCharacter(userId, characterId) {
   const sql = `
@@ -206,8 +198,8 @@ export async function getIsFavoriteCharacter(userId, characterId) {
 
 /**
  * Favorite a character
- * @param {number} userId - The user's id
- * @param {number} characterId - The character's id
+ * @param {number} userId The user's id
+ * @param {number} characterId The character's id
  */
 export async function addFavoriteCharacter(userId, characterId) {
   const sql = `
@@ -221,8 +213,8 @@ export async function addFavoriteCharacter(userId, characterId) {
 
 /**
  * Unfavorite a character
- * @param {number} userId - The user's id
- * @param {number} characterId - The character's id
+ * @param {number} userId The user's id
+ * @param {number} characterId The character's id
  */
 export async function removeFavoriteCharacter(userId, characterId) {
   const sql = `

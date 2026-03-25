@@ -1,6 +1,8 @@
 import db from "#db/client";
 
-// For functions where we want to grab the characters associated with the team as well
+/**
+ * For functions where we want to grab the characters associated with the team as well
+ */
 const CHARACTERS_FRAGMENT = `
     (
       SELECT json_agg(characters)
@@ -12,24 +14,23 @@ const CHARACTERS_FRAGMENT = `
     `;
 
 /**
- * Represents a battle
- * @typedef {object} BattleInfo
- * @property {number} challenger - The id of the challenging team
- * @property {number} defender - The id of the defending team
- * @property {number} winner - The id of the winning team
- */
-/**
- * @typedef {object} BattleHistory
- * @property {number} total_battles - The total number of battles participated in
- * @property {number} wins - How many battles its team has won
- * @property {BattleInfo[]} battle_history - An array of battles participated in
+ * @typedef {object} TeamInfo
+ * @property {number} userId
+ * @property {string} name
  */
 
 /**
- * Create a new team
- * @param {number} userId - The id of the team creator
- * @param {string} name - The name of the team
- * @returns the new team
+ * @typedef {object} ID
+ * @property {number} id
+ */
+
+/**
+ * @typedef {TeamInfo & ID} Team
+ */
+
+/**
+ * @param {TeamInfo}
+ * @returns {Promise<Team>} the new team
  */
 export async function createTeam({ userId, name }) {
   const sql = `
@@ -46,7 +47,7 @@ export async function createTeam({ userId, name }) {
 }
 
 /**
- * @returns an array containing all teams
+ * @returns {Promise<Team[]>} an array containing all teams
  */
 export async function allTeams() {
   const sql = `SELECT teams.*, ${CHARACTERS_FRAGMENT}
@@ -56,9 +57,8 @@ export async function allTeams() {
 }
 
 /**
- * Get a team by id
- * @param {number} id - Id of the team
- * @returns the team with the given id
+ * @param {number} id Id of the team
+ * @returns {Promise<Team>} the team with the given id
  */
 export async function getTeam(id) {
   const sql = `SELECT teams.*,
@@ -74,9 +74,8 @@ export async function getTeam(id) {
 }
 
 /**
- * Get teams belonging to a user
- * @param {number} id - The id of the user
- * @returns an array containing teams created by the given user
+ * @param {number} id The id of the user
+ * @returns {Promise<Team[]>} an array containing teams created by the given user
  */
 export async function getTeamsByUserId(id) {
   const sql = `SELECT teams.*, ${CHARACTERS_FRAGMENT}
@@ -86,11 +85,10 @@ export async function getTeamsByUserId(id) {
 }
 
 /**
- * Update a team by its id
- * @param {number} id - The id of the team to update
- * @param {number} userId - The id of the user
- * @param {string} name - The name of the team
- * @returns The updated team
+ * @param {number} id The id of the team to update
+ * @param {number} userId The id of the user
+ * @param {string} name The name of the team
+ * @returns {Promise<Team>} The updated team
  */
 export async function updateTeam({ id, userId, name }) {
   const sql = `
@@ -109,9 +107,8 @@ export async function updateTeam({ id, userId, name }) {
 }
 
 /**
- * Delete a team by its id
- * @param {number} id - The id of the team
- * @returns the deleted team
+ * @param {number} id The id of the team
+ * @returns {Promise<Team>} the deleted team
  */
 export async function deleteTeam(id) {
   const sql = `
@@ -126,6 +123,10 @@ export async function deleteTeam(id) {
   return teams;
 }
 
+/**
+ * @param {number} id user id
+ * @returns {Promise<Team>}
+ */
 export async function getFavoriteTeams(id) {
   const sql = `SELECT teams.*, ${CHARACTERS_FRAGMENT}
     FROM teams
