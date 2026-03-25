@@ -2,14 +2,15 @@ import db from "#db/client";
 
 /**
  * Represents an ability
- * @typedef {object} abilityInfo
+ * @typedef {object} AbilityInfo
  * @property {string} name
  * @property {string} description
  * @property {number} cost
  */
+
 /**
  * Create an ability
- * @param {abilityInfo} abilityInfo
+ * @param {AbilityInfo} abilityInfo
  * @returns the new ability
  */
 export async function createAbility({ cost, name, description }) {

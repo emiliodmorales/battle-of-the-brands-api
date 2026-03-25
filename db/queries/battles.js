@@ -2,14 +2,15 @@ import db from "#db/client";
 
 /**
  * Represents a battle
- * @typedef {object} battleInfo
+ * @typedef {object} BattleInfo
  * @property {number} challenger - The id of the challenging team
  * @property {number} defender - The id of the defending team
  * @property {number} winner - The id of the winning team
  */
+
 /**
  * Create a new battle
- * @param {battleInfo} battleInfo
+ * @param {BattleInfo} battleInfo
  * @returns the new battle
  */
 export async function createBattle({ challenger, defender, winner }) {

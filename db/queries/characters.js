@@ -1,7 +1,7 @@
 import db from "#db/client";
 
 // Basic character query
-const SELECT_CHARACTERS = `
+const CHARACTERS_FRAGMENT = `
     SELECT
       characters.*,
       users.username,
@@ -13,7 +13,7 @@ const SELECT_CHARACTERS = `
 
 /**
  * Represents a character
- * @typedef {object} characterInfo
+ * @typedef {object} CharacterInfo
  * @property {string} name - The name of the character
  * @property {string} description - A short description of the character
  * @property {string} image - A url to an image of the character
@@ -24,8 +24,22 @@ const SELECT_CHARACTERS = `
  * @property {number} userId - Id of character's creator
  */
 /**
+ * Represents a battle
+ * @typedef {object} BattleInfo
+ * @property {number} challenger - The id of the challenging team
+ * @property {number} defender - The id of the defending team
+ * @property {number} winner - The id of the winning team
+ */
+/**
+ * @typedef {object} BattleHistory
+ * @property {number} total_battles - The total number of battles participated in
+ * @property {number} wins - How many battles its team has won
+ * @property {BattleInfo[]} battle_history - An array of battles participated in
+ */
+
+/**
  * Create a new character
- * @param {characterInfo} characterInfo
+ * @param {CharacterInfo} characterInfo
  * @returns the new character
  */
 export async function createCharacter({
@@ -64,7 +78,7 @@ export async function createCharacter({
  * @returns An array containing all characters
  */
 export async function getAllCharacters() {
-  const sql = SELECT_CHARACTERS;
+  const sql = CHARACTERS_FRAGMENT;
   const { rows: characters } = await db.query(sql);
   return characters;
 }
@@ -76,7 +90,7 @@ export async function getAllCharacters() {
  */
 export async function getCharacterById(id) {
   const sql = `
-    ${SELECT_CHARACTERS}
+    ${CHARACTERS_FRAGMENT}
     WHERE characters.id=$1
   `;
   const {
@@ -92,7 +106,7 @@ export async function getCharacterById(id) {
  */
 export async function getCharactersByUserId(id) {
   const sql = `
-    ${SELECT_CHARACTERS}
+    ${CHARACTERS_FRAGMENT}
     WHERE characters.user_id=$1
   `;
   const { rows: characters } = await db.query(sql, [id]);
@@ -101,7 +115,7 @@ export async function getCharactersByUserId(id) {
 
 /**
  * Update a character with the given id
- * @param {characterInfo} characterInfo
+ * @param {CharacterInfo} characterInfo
  */
 export async function updateCharacterById({
   id,
@@ -157,22 +171,9 @@ export async function deleteCharacterById(id) {
 }
 
 /**
- * Represents a battle
- * @typedef {object} battleInfo
- * @property {number} challenger - The id of the challenging team
- * @property {number} defender - The id of the defending team
- * @property {number} winner - The id of the winning team
- */
-/**
- * @typedef {object} battleHistory
- * @property {number} total_battles - The total number of battles participated in
- * @property {number} wins - How many battles its team has won
- * @property {battleInfo[]} battle_history - An array of battles participated in
- */
-/**
  * Get the battle history of a character by its id
  * @param {number} id - The id of the character
- * @returns {battleHistory} the character's battle history
+ * @returns {BattleHistory} the character's battle history
  */
 export async function getCharacterHistory(id) {
   const sql = `
@@ -206,7 +207,7 @@ export async function getCharacterHistory(id) {
  */
 export async function getFavoriteCharacters(id) {
   const sql = `
-    ${SELECT_CHARACTERS}
+    ${CHARACTERS_FRAGMENT}
     JOIN favorite_characters
     ON favorite_characters.character_id = characters.id
     WHERE favorite_characters.user_id = $1

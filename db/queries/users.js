@@ -2,6 +2,20 @@ import db from "#db/client";
 import bcrypt from "bcrypt";
 
 /**
+ * Represents a battle
+ * @typedef {object} BattleInfo
+ * @property {number} challenger - The id of the challenging team
+ * @property {number} defender - The id of the defending team
+ * @property {number} winner - The id of the winning team
+ */
+/**
+ * @typedef {object} BattleHistory
+ * @property {number} total_battles - The total number of battles participated in
+ * @property {number} wins - How many battles its team has won
+ * @property {BattleInfo[]} battle_history - An array of battles participated in
+ */
+
+/**
  * Create a new user
  * @param {string} username - The desired username
  * @param {string} password - An unencrypted password
@@ -75,22 +89,9 @@ export async function getUsers() {
 }
 
 /**
- * Represents a battle
- * @typedef {object} battleInfo
- * @property {number} challenger - The id of the challenging team
- * @property {number} defender - The id of the defending team
- * @property {number} winner - The id of the winning team
- */
-/**
- * @typedef {object} battleHistory
- * @property {number} total_battles - The total number of battles participated in
- * @property {number} wins - How many battles its team has won
- * @property {battleInfo[]} battle_history - An array of battles participated in
- */
-/**
  * Get the battle history of a user by their id
  * @param {number} id - The id of the user
- * @returns {battleHistory} the user's battle history
+ * @returns {BattleHistory} the user's battle history
  */
 export async function getUserHistory(id) {
   const sql = `

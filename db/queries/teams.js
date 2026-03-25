@@ -1,7 +1,7 @@
 import db from "#db/client";
 
 // For functions where we want to grab the characters associated with the team as well
-const CHARACTER_SUBQUERY = `
+const CHARACTERS_FRAGMENT = `
     (
       SELECT json_agg(characters)
       FROM characters
@@ -10,6 +10,21 @@ const CHARACTER_SUBQUERY = `
       WHERE teams_characters.team_id = teams.id
     ) AS characters
     `;
+
+/**
+ * Represents a battle
+ * @typedef {object} BattleInfo
+ * @property {number} challenger - The id of the challenging team
+ * @property {number} defender - The id of the defending team
+ * @property {number} winner - The id of the winning team
+ */
+/**
+ * @typedef {object} BattleHistory
+ * @property {number} total_battles - The total number of battles participated in
+ * @property {number} wins - How many battles its team has won
+ * @property {BattleInfo[]} battle_history - An array of battles participated in
+ */
+
 /**
  * Create a new team
  * @param {number} userId - The id of the team creator
@@ -34,7 +49,7 @@ export async function createTeam({ userId, name }) {
  * @returns an array containing all teams
  */
 export async function allTeams() {
-  const sql = `SELECT teams.*, ${CHARACTER_SUBQUERY}
+  const sql = `SELECT teams.*, ${CHARACTERS_FRAGMENT}
     FROM teams`;
   const { rows: teams } = await db.query(sql);
   return teams;
@@ -47,7 +62,7 @@ export async function allTeams() {
  */
 export async function getTeam(id) {
   const sql = `SELECT teams.*,
-    ${CHARACTER_SUBQUERY},
+    ${CHARACTERS_FRAGMENT},
     users.username AS username
     FROM teams
     JOIN users ON teams.user_id = users.id
@@ -64,7 +79,7 @@ export async function getTeam(id) {
  * @returns an array containing teams created by the given user
  */
 export async function getTeamsByUserId(id) {
-  const sql = `SELECT teams.*, ${CHARACTER_SUBQUERY}
+  const sql = `SELECT teams.*, ${CHARACTERS_FRAGMENT}
     FROM teams WHERE user_id= $1`;
   const { rows: teams } = await db.query(sql, [id]);
   return teams;
@@ -112,22 +127,9 @@ export async function deleteTeam(id) {
 }
 
 /**
- * Represents a battle
- * @typedef {object} battleInfo
- * @property {number} challenger - The id of the challenging team
- * @property {number} defender - The id of the defending team
- * @property {number} winner - The id of the winning team
- */
-/**
- * @typedef {object} battleHistory
- * @property {number} total_battles - The total number of battles participated in
- * @property {number} wins - How many battles its team has won
- * @property {battleInfo[]} battle_history - An array of battles participated in
- */
-/**
  * Get the battle history of a team by its id
  * @param {number} id - The id of the team
- * @returns {battleHistory} the team's battle history
+ * @returns {BattleHistory} the team's battle history
  */
 export async function getTeamHistory(id) {
   const sql = `
@@ -153,7 +155,7 @@ export async function getTeamHistory(id) {
 }
 
 export async function getFavoriteTeams(id) {
-  const sql = `SELECT teams.*, ${CHARACTER_SUBQUERY}
+  const sql = `SELECT teams.*, ${CHARACTERS_FRAGMENT}
     FROM teams
     JOIN favorite_teams
     ON teams.id = favorite_teams.team_id

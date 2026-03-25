@@ -1,14 +1,15 @@
 import db from "#db/client";
 
 /**
- * @typedef {object} teamCharacter
+ * @typedef {object} TeamCharacter
  * @property {number} teamId - Id of the team
  * @property {number} characterId - Id of the character
  * @property {number} position - Character position in the team
  */
+
 /**
  * Add a character to a team
- * @param {teamCharacter} teamCharacter
+ * @param {TeamCharacter} teamCharacter
  * @returns the new team character
  */
 export async function addCharacterToTeam({ teamId, characterId, position }) {
