@@ -146,3 +146,32 @@ export async function getUserFollowing(id) {
   const { rows: users } = await db.query(sql, [id]);
   return users;
 }
+
+export async function getUserIsFollowing(followerId, followingId) {
+  const sql = `
+    SELECT FROM followers
+    WHERE follower = $1 AND following = $2
+  `;
+  const {
+    rows: [user],
+  } = await db.query(sql, [followerId, followingId]);
+  return user !== undefined;
+}
+
+export async function addFollower(followerId, followingId) {
+  const sql = `
+    INSERT INTO followers
+      (follower, following)
+    VALUES
+      ($1, $2)
+  `;
+  await db.query(sql, [followerId, followingId]);
+}
+
+export async function removeFollower(followerId, followingId) {
+  const sql = `
+    DELETE FROM followers
+    WHERE follower = $1 AND following = $2
+  `;
+  await db.query(sql, [followerId, followingId]);
+}

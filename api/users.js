@@ -10,6 +10,9 @@ import {
   getUserHistory,
   getUserFollowers,
   getUserFollowing,
+  addFollower,
+  removeFollower,
+  getUserIsFollowing,
 } from "#db/queries/users";
 import { getFavoriteTeams, getTeamsByUserId } from "#db/queries/teams";
 import {
@@ -128,4 +131,19 @@ router.get("/:id/followers", async (req, res) => {
 router.get("/:id/following", async (req, res) => {
   const following = await getUserFollowing(req.aboutUser.id);
   res.send(following);
+});
+
+router.get("/:id/is_following", requireUser, async (req, res) => {
+  const following = await getUserIsFollowing(req.user.id, req.aboutUser.id);
+  res.send(following);
+});
+
+router.post("/:id/following", requireUser, async (req, res) => {
+  await addFollower(req.user.id, req.aboutUser.id);
+  res.sendStatus(201);
+});
+
+router.delete("/:id/following", requireUser, async (req, res) => {
+  await removeFollower(req.user.id, req.aboutUser.id);
+  res.sendStatus(204);
 });
