@@ -13,16 +13,39 @@ import {
   deleteTeam,
   getTeamHistory,
 } from "#db/queries/teams";
+import { addCharacterToTeam } from "#db/queries/teams_characters";
 
 router.get("/", async (req, res) => {
   const teams = await allTeams();
   res.send(teams);
 });
 
-router.post("/", requireUser, requireBody(["name"]), async (req, res) => {
-  const team = createTeam({ userId: req.user.id, name });
-  res.status(201).send();
-});
+router.post(
+  "/",
+  requireUser,
+  requireBody(["name", "characterIds"]),
+  async (req, res) => {
+    try {
+      const { name, characterIds } = req.body;
+      if (!Array.isArray(characterIds) || characterIds.length !== 5) {
+        return res.status(400).send("You must select exactly 5 characters.");
+      }
+      // Create the team
+      const team = await createTeam({ userId: req.user.id, name });
+      for (let i = 0; i < characterIds.length; i++) {
+        await addCharacterToTeam({
+          teamId: team.id,
+          characterId: characterIds[i],
+          position: i + 1,
+        });
+      }
+      res.status(201).send(team);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Failed to create team.");
+    }
+  },
+);
 
 router.param("id", async (req, res, next, id) => {
   const team = await getTeam(id);
