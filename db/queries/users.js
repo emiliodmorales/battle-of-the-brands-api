@@ -19,20 +19,21 @@ import bcrypt from "bcrypt";
  * Create a new user
  * @param {string} username - The desired username
  * @param {string} password - An unencrypted password
+ * @param {string} image - A url for a pfp
  * @returns the new user
  */
-export async function createUser(username, password) {
+export async function createUser(username, password, image) {
   const sql = `
   INSERT INTO users
-    (username, password)
+    (username, password, image)
   VALUES
-    ($1, $2)
+    ($1, $2, $3)
   RETURNING *
   `;
   const hashedPassword = await bcrypt.hash(password, 10);
   const {
     rows: [user],
-  } = await db.query(sql, [username, hashedPassword]);
+  } = await db.query(sql, [username, hashedPassword, image]);
   return user;
 }
 
