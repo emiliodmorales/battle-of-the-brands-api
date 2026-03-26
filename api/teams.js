@@ -11,9 +11,9 @@ import {
   getTeam,
   updateTeam,
   deleteTeam,
-  getTeamHistory,
 } from "#db/queries/teams";
 import { addCharacterToTeam } from "#db/queries/teams_characters";
+import { getTeamHistory } from "#db/queries/battles";
 
 router.get("/", async (req, res) => {
   const teams = await allTeams();
