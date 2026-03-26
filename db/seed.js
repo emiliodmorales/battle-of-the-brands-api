@@ -80,7 +80,11 @@ async function seed() {
 }
 
 async function createPokemon() {
-  const ash = await createUser("Ash", "ketchum");
+  const ash = await createUser(
+    "Ash",
+    "ketchum",
+    "https://upload.wikimedia.org/wikipedia/en/e/e4/Ash_Ketchum_Journeys.png",
+  );
   const pokemonTeam = await createTeam({
     userId: ash.id,
     name: "Ash's pokemon",
@@ -175,7 +179,11 @@ async function createPokemon() {
 }
 
 async function createDigimon() {
-  const taichi = await createUser("Taichi", "yagami");
+  const taichi = await createUser(
+    "Taichi",
+    "yagami",
+    "https://upload.wikimedia.org/wikipedia/en/0/06/Tai_Kamiya_in_Digimon_Adventure_01.png",
+  );
   const digimonTeam = await createTeam({
     userId: taichi.id,
     name: "Taichi's Digimon",
