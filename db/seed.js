@@ -12,9 +12,9 @@ await db.end();
 console.log("🌱 Database seeded.");
 
 async function seed() {
+  await createAbilities();
   const pokemon = await createPokemon();
   const digimon = await createDigimon();
-  await createAbilities();
 
   await createBattle({
     challenger: pokemon.id,
@@ -56,7 +56,7 @@ async function createPokemon() {
     hp: 5,
     attack: 10,
     defense: 2,
-    abilityId: null,
+    abilityId: Math.floor(Math.random() * 10) + 1,
     userId: ash.id,
   });
   await addCharacterToTeam({
@@ -74,7 +74,7 @@ async function createPokemon() {
     hp: 5,
     attack: 10,
     defense: 2,
-    abilityId: null,
+    abilityId: Math.floor(Math.random() * 10) + 1,
     userId: ash.id,
   });
   await addCharacterToTeam({
@@ -91,7 +91,7 @@ async function createPokemon() {
     hp: 5,
     attack: 10,
     defense: 2,
-    abilityId: null,
+    abilityId: Math.floor(Math.random() * 10) + 1,
     userId: ash.id,
   });
   await addCharacterToTeam({
@@ -108,7 +108,7 @@ async function createPokemon() {
     hp: 5,
     attack: 10,
     defense: 2,
-    abilityId: null,
+    abilityId: Math.floor(Math.random() * 10) + 1,
     userId: ash.id,
   });
   await addCharacterToTeam({
@@ -125,7 +125,7 @@ async function createPokemon() {
     hp: 5,
     attack: 10,
     defense: 2,
-    abilityId: null,
+    abilityId: Math.floor(Math.random() * 10) + 1,
     userId: ash.id,
   });
   await addCharacterToTeam({
@@ -156,7 +156,7 @@ async function createDigimon() {
     hp: 5,
     attack: 10,
     defense: 2,
-    abilityId: null,
+    abilityId: Math.floor(Math.random() * 10) + 1,
     userId: taichi.id,
   });
   await addCharacterToTeam({
@@ -172,7 +172,7 @@ async function createDigimon() {
     hp: 5,
     attack: 10,
     defense: 2,
-    abilityId: null,
+    abilityId: Math.floor(Math.random() * 10) + 1,
     userId: taichi.id,
   });
   await addCharacterToTeam({
@@ -189,7 +189,7 @@ async function createDigimon() {
     hp: 5,
     attack: 10,
     defense: 2,
-    abilityId: null,
+    abilityId: Math.floor(Math.random() * 10) + 1,
     userId: taichi.id,
   });
   await addCharacterToTeam({
@@ -206,7 +206,7 @@ async function createDigimon() {
     hp: 5,
     attack: 10,
     defense: 2,
-    abilityId: null,
+    abilityId: Math.floor(Math.random() * 10) + 1,
     userId: taichi.id,
   });
   await addCharacterToTeam({
@@ -223,7 +223,7 @@ async function createDigimon() {
     hp: 5,
     attack: 10,
     defense: 2,
-    abilityId: null,
+    abilityId: Math.floor(Math.random() * 10) + 1,
     userId: taichi.id,
   });
   await addCharacterToTeam({

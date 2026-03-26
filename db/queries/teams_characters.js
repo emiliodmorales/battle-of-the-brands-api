@@ -8,9 +8,7 @@ import db from "#db/client";
  */
 
 /**
- * Add a character to a team
  * @param {TeamCharacter} teamCharacter
- * @returns the new team character
  */
 export async function addCharacterToTeam({ teamId, characterId, position }) {
   const sql = `
@@ -20,8 +18,5 @@ export async function addCharacterToTeam({ teamId, characterId, position }) {
       ($1, $2, $3)
     RETURNING *
   `;
-  const {
-    rows: [team_character],
-  } = await db.query(sql, [teamId, characterId, position]);
-  return team_character;
+  await db.query(sql, [teamId, characterId, position]);
 }

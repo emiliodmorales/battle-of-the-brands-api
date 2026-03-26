@@ -1,7 +1,6 @@
 import db from "#db/client";
 
 /**
- * Represents an ability
  * @typedef {object} AbilityInfo
  * @property {string} name
  * @property {string} description
@@ -9,9 +8,18 @@ import db from "#db/client";
  */
 
 /**
- * Create an ability
- * @param {AbilityInfo} abilityInfo
- * @returns the new ability
+ * @typedef {object} ID
+ * @property {number} id
+ */
+
+/**
+ * @typedef {AbilityInfo & ID} Ability
+ */
+
+/**
+ * Creates a new ability
+ * @param {AbilityInfo}
+ * @returns {Promise<Ability>} The new ability
  */
 export async function createAbility({ cost, name, description }) {
   const sql = `
@@ -28,7 +36,7 @@ export async function createAbility({ cost, name, description }) {
 }
 
 /**
- * @returns An array containing all abilities
+ * @returns {Promise<Ability[]>} An array containing all abilities
  */
 export async function getAbilities() {
   const sql = "SELECT * FROM abilities";
@@ -37,10 +45,9 @@ export async function getAbilities() {
 }
 
 /**
- * Get an ability by its id
+ * Get an ability by its id. Returns null when there is no ability with the given id.
  * @param {number} id Ability ID to retrieve
- * @returns the ability with the given id
- * @returns null, if no ability has the given id
+ * @returns {Promise<Ability>} The ability with the given id
  */
 export async function getAbilityById(id) {
   const sql = "SELECT * FROM abilities WHERE id= $1";

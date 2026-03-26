@@ -11,8 +11,8 @@ import {
   getCharacterById,
   updateCharacterById,
   deleteCharacterById,
-  getCharacterHistory,
 } from "#db/queries/characters";
+import { getCharacterHistory } from "#db/queries/battles";
 
 router.get("/", async (req, res) => {
   const chars = await getAllCharacters();
