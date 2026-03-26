@@ -125,14 +125,12 @@ export async function getTeamHistory(id) {
       (
         SELECT count(battles)
         FROM battles
-        JOIN "teams_characters" ON teams_characters.character_id=$1
-        WHERE (challenger=teams_characters.team_id OR defender=teams_characters.team_id) AND winner!=teams_characters.team_id
+        WHERE (challenger=$1 OR defender=$1) AND winner!=$1
       ) AS losses,
       (
         SELECT count(battles)
         FROM battles
-        JOIN "teams_characters" ON teams_characters.character_id=$1
-        WHERE (challenger=teams_characters.team_id OR defender=teams_characters.team_id) AND winner IS NULL
+        WHERE (challenger=$1 OR defender=$1) AND winner IS NULL
       ) AS draws
     FROM "battles"
     WHERE challenger=$1 OR defender=$1
@@ -162,18 +160,17 @@ export async function getUserHistory(id) {
       (
         SELECT count(battles)
         FROM battles
-        JOIN "teams_characters" ON teams_characters.character_id=$1
-        WHERE (challenger=teams_characters.team_id OR defender=teams_characters.team_id) AND winner!=teams_characters.team_id
+        WHERE (challenger=teams.id OR defender=teams.id) AND winner!=teams.id
       ) AS losses,
       (
         SELECT count(battles)
         FROM battles
-        JOIN "teams_characters" ON teams_characters.character_id=$1
-        WHERE (challenger=teams_characters.team_id OR defender=teams_characters.team_id) AND winner IS NULL
+        WHERE (challenger=teams.id OR defender=teams.id) AND winner IS NULL
       ) AS draws
     FROM "battles"
     JOIN "teams" ON teams.user_id=$1
     WHERE challenger=teams.id OR defender=teams.id
+    GROUP BY teams.id
   `;
   const {
     rows: [history],
