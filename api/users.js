@@ -14,7 +14,13 @@ import {
   removeFollower,
   getUserIsFollowing,
 } from "#db/queries/users";
-import { getFavoriteTeams, getTeamsByUserId } from "#db/queries/teams";
+import {
+  getFavoriteTeams,
+  getTeamsByUserId,
+  addFavoriteTeam,
+  removeFavoriteTeam,
+  getIsFavoriteTeam,
+} from "#db/queries/teams";
 import {
   getFavoriteCharacters,
   getCharactersByUserId,
@@ -60,6 +66,34 @@ router.get("/favorite_teams", requireUser, async (req, res) => {
   const faves = await getFavoriteTeams(req.user.id);
   res.send(faves);
 });
+
+router.get("/favorite_teams/:id", requireUser, async (req, res) => {
+  const { id } = req.params;
+  const fave = await getIsFavoriteTeam(req.user.id, id);
+  res.send(fave);
+});
+
+router.post(
+  "/favorite_teams",
+  requireBody(["id"]),
+  requireUser,
+  async (req, res) => {
+    const { id } = req.body;
+    await addFavoriteTeam(req.user.id, id);
+    res.sendStatus(201);
+  },
+);
+
+router.delete(
+  "/favorite_teams",
+  requireBody(["id"]),
+  requireUser,
+  async (req, res) => {
+    const { id } = req.body;
+    await removeFavoriteTeam(req.user.id, id);
+    res.sendStatus(204);
+  },
+);
 
 router.get("/favorite_characters", requireUser, async (req, res) => {
   const faves = await getFavoriteCharacters(req.user.id);

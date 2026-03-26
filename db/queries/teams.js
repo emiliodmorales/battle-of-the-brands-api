@@ -163,3 +163,49 @@ export async function getFavoriteTeams(id) {
   const { rows: teams } = await db.query(sql, [id]);
   return teams;
 }
+
+/**
+ * Check if a user has favorited a team
+ * @param {number} userId - The user's id
+ * @param {number} teamId - The team's id
+ * @returns Whether the team is a favorite
+ */
+export async function getIsFavoriteTeam(userId, teamId) {
+  const sql = `
+    SELECT * FROM "favorite_teams"
+    WHERE favorite_teams.user_id = $1
+      AND favorite_teams.team_id = $2
+  `;
+  const {
+    rows: [team],
+  } = await db.query(sql, [userId, teamId]);
+  return team !== undefined;
+}
+
+/**
+ * Favorite a team
+ * @param {number} userId - The user's id
+ * @param {number} teamId - The team's id
+ */
+export async function addFavoriteTeam(userId, teamId) {
+  const sql = `
+    INSERT INTO "favorite_teams"
+      (user_id, team_id)
+    VALUES
+      ($1, $2)
+  `;
+  await db.query(sql, [userId, teamId]);
+}
+
+/**
+ * Unfavorite a team
+ * @param {number} userId - The user's id
+ * @param {number} teamId - The team's id
+ */
+export async function removeFavoriteTeam(userId, teamId) {
+  const sql = `
+    DELETE FROM "favorite_teams"
+    WHERE user_id = $1 AND team_id = $2
+  `;
+  await db.query(sql, [userId, teamId]);
+}
