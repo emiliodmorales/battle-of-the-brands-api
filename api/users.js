@@ -33,9 +33,9 @@ router.get("/", async (req, res) => {
 
 router
   .route("/register")
-  .post(requireBody(["username", "password"]), async (req, res) => {
-    const { username, password } = req.body;
-    const user = await createUser(username, password);
+  .post(requireBody(["username", "password", "image"]), async (req, res) => {
+    const { username, password, image } = req.body;
+    const user = await createUser(username, password, image);
 
     const token = await createToken({ id: user.id });
     res.status(201).send(token);
