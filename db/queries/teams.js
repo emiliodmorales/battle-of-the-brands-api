@@ -141,7 +141,7 @@ export async function getFavoriteTeams(id) {
  * Check if a user has favorited a team
  * @param {number} userId - The user's id
  * @param {number} teamId - The team's id
- * @returns Whether the team is a favorite
+ * @returns {Promise<Boolean>} Whether the team is a favorite
  */
 export async function getIsFavoriteTeam(userId, teamId) {
   const sql = `
