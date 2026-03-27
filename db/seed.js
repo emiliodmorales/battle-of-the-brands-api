@@ -6,6 +6,21 @@ import { addCharacterToTeam } from "#db/queries/teams_characters";
 import { createBattle } from "#db/queries/battles";
 import { createAbility } from "#db/queries/abilities";
 
+const NUM_ABILITIES = 10;
+
+function generateStats() {
+  let points = 25;
+  const randomStat = () => Math.floor(Math.random() * points);
+  const hp = randomStat();
+  points -= hp;
+  const attack = randomStat();
+  points -= attack;
+  const defense = points;
+  return { hp, attack, defense };
+}
+
+const randomAbility = () => Math.floor(Math.random() * NUM_ABILITIES) + 1;
+
 await db.connect();
 await seed();
 await db.end();
@@ -53,10 +68,8 @@ async function createPokemon() {
     name: "Pikachu",
     description: "electric mouse",
     image: "https://img.pokemondb.net/artwork/large/pikachu.jpg",
-    hp: 5,
-    attack: 10,
-    defense: 2,
-    abilityId: Math.floor(Math.random() * 10) + 1,
+    ...generateStats(),
+    abilityId: randomAbility(),
     userId: ash.id,
   });
   await addCharacterToTeam({
@@ -71,10 +84,8 @@ async function createPokemon() {
     description: "fire lizard",
     image:
       "https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/detail/006.png",
-    hp: 5,
-    attack: 10,
-    defense: 2,
-    abilityId: Math.floor(Math.random() * 10) + 1,
+    ...generateStats(),
+    abilityId: randomAbility(),
     userId: ash.id,
   });
   await addCharacterToTeam({
@@ -88,10 +99,8 @@ async function createPokemon() {
     description: "grass lover",
     image:
       "https://breedersguide.home.blog/wp-content/uploads/2019/04/bulbasaur.png",
-    hp: 5,
-    attack: 10,
-    defense: 2,
-    abilityId: Math.floor(Math.random() * 10) + 1,
+    ...generateStats(),
+    abilityId: randomAbility(),
     userId: ash.id,
   });
   await addCharacterToTeam({
@@ -105,10 +114,8 @@ async function createPokemon() {
     description: "floating rocks",
     image:
       "https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/074.png",
-    hp: 5,
-    attack: 10,
-    defense: 2,
-    abilityId: Math.floor(Math.random() * 10) + 1,
+    ...generateStats(),
+    abilityId: randomAbility(),
     userId: ash.id,
   });
   await addCharacterToTeam({
@@ -122,10 +129,8 @@ async function createPokemon() {
     description: "big bee",
     image:
       "https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/015_f2.png",
-    hp: 5,
-    attack: 10,
-    defense: 2,
-    abilityId: Math.floor(Math.random() * 10) + 1,
+    ...generateStats(),
+    abilityId: randomAbility(),
     userId: ash.id,
   });
   await addCharacterToTeam({
@@ -153,10 +158,8 @@ async function createDigimon() {
     description: "little trex",
     image:
       "https://wikimon.net/images/thumb/5/5e/Agumon_survive.png/320px-Agumon_survive.png",
-    hp: 5,
-    attack: 10,
-    defense: 2,
-    abilityId: Math.floor(Math.random() * 10) + 1,
+    ...generateStats(),
+    abilityId: randomAbility(),
     userId: taichi.id,
   });
   await addCharacterToTeam({
@@ -169,10 +172,8 @@ async function createDigimon() {
     name: "Numemon",
     description: "slug",
     image: "https://static.wikitide.net/netdriverwiki/9/9c/Numemon.png",
-    hp: 5,
-    attack: 10,
-    defense: 2,
-    abilityId: Math.floor(Math.random() * 10) + 1,
+    ...generateStats(),
+    abilityId: randomAbility(),
     userId: taichi.id,
   });
   await addCharacterToTeam({
@@ -186,10 +187,8 @@ async function createDigimon() {
     description: "fire bird",
     image:
       "https://cdn.weasyl.com/static/media/1d/e2/47/1de247f587279e41559069651cab31db4e5b628d54ce613069d19a0e176e5522.png",
-    hp: 5,
-    attack: 10,
-    defense: 2,
-    abilityId: Math.floor(Math.random() * 10) + 1,
+    ...generateStats(),
+    abilityId: randomAbility(),
     userId: taichi.id,
   });
   await addCharacterToTeam({
@@ -203,10 +202,8 @@ async function createDigimon() {
     description: "teddy bear",
     image:
       "https://static.wikia.nocookie.net/vsbattles/images/3/3e/Monzaemon_New_Century.png",
-    hp: 5,
-    attack: 10,
-    defense: 2,
-    abilityId: Math.floor(Math.random() * 10) + 1,
+    ...generateStats(),
+    abilityId: randomAbility(),
     userId: taichi.id,
   });
   await addCharacterToTeam({
@@ -220,10 +217,8 @@ async function createDigimon() {
     description: "plant",
     image:
       "https://static.wikia.nocookie.net/digimon/images/2/29/Vegiemon_b.jpg",
-    hp: 5,
-    attack: 10,
-    defense: 2,
-    abilityId: Math.floor(Math.random() * 10) + 1,
+    ...generateStats(),
+    abilityId: randomAbility(),
     userId: taichi.id,
   });
   await addCharacterToTeam({
