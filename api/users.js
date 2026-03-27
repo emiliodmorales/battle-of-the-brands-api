@@ -7,7 +7,6 @@ import {
   getUserById,
   getUserByUsernameAndPassword,
   getUsers,
-  getUserHistory,
   getUserFollowers,
   getUserFollowing,
   addFollower,
@@ -31,6 +30,7 @@ import {
 import requireBody from "#middleware/requireBody";
 import { createToken } from "#utils/jwt";
 import requireUser from "#middleware/requireUser";
+import { getUserHistory } from "#db/queries/battles";
 
 router.get("/", async (req, res) => {
   const users = await getUsers();
@@ -39,9 +39,9 @@ router.get("/", async (req, res) => {
 
 router
   .route("/register")
-  .post(requireBody(["username", "password"]), async (req, res) => {
-    const { username, password } = req.body;
-    const user = await createUser(username, password);
+  .post(requireBody(["username", "password", "image"]), async (req, res) => {
+    const { username, password, image } = req.body;
+    const user = await createUser(username, password, image);
 
     const token = await createToken({ id: user.id });
     res.status(201).send(token);
@@ -144,7 +144,7 @@ router.get("/:id", async (req, res) => {
 
 router.get("/:id/history", async (req, res) => {
   const history = await getUserHistory(req.aboutUser.id);
-  res.send(history);
+  res.send(history || {});
 });
 
 router.get("/:id/teams", async (req, res) => {
