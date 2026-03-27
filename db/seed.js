@@ -10,7 +10,7 @@ const NUM_ABILITIES = 10;
 
 function generateStats() {
   let points = 25;
-  const randomStat = () => Math.floor(Math.random() * points);
+  const randomStat = () => Math.floor(Math.random() * (points - 1)) + 1;
   const hp = randomStat();
   points -= hp;
   const attack = randomStat();
