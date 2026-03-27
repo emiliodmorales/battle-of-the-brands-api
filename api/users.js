@@ -67,9 +67,9 @@ router.get("/favorite_teams", requireUser, async (req, res) => {
   res.send(faves);
 });
 
-router.get("/favorite_teams/:id", requireUser, async (req, res) => {
-  const { id } = req.params;
-  const fave = await getIsFavoriteTeam(req.user.id, id);
+router.get("/favorite_teams/:teamId", requireUser, async (req, res) => {
+  const { teamId } = req.params;
+  const fave = await getIsFavoriteTeam(req.user.id, teamId);
   res.send(fave);
 });
 
