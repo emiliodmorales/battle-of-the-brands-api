@@ -185,14 +185,14 @@ export async function removeFavoriteTeam(userId, teamId) {
 
 /**
  * Get a random team
- * @returns {Promise<Team>} Random extant team
+ * @returns {Promise<Team[]>} Random extant team
  */
-export async function getRandomTeam() {
+export async function getRandomTeams() {
   const sql = `
     SELECT teams.*, ${CHARACTERS_FRAGMENT}
     FROM teams
     ORDER BY RANDOM()
-    LIMIT 1
   `;
-  await db.query(sql);
+  const { rows: teams } = await db.query(sql);
+  return teams;
 }

@@ -11,7 +11,7 @@ import {
   getTeam,
   updateTeam,
   deleteTeam,
-  getRandomTeam,
+  getRandomTeams,
 } from "#db/queries/teams";
 import { addCharacterToTeam } from "#db/queries/teams_characters";
 import { getTeamHistory } from "#db/queries/battles";
@@ -48,6 +48,11 @@ router.post(
   },
 );
 
+router.get("/random", async (req, res) => {
+  const team = await getRandomTeams();
+  res.send(team);
+});
+
 router.param("id", async (req, res, next, id) => {
   const team = await getTeam(id);
   if (!team) return res.status(404).send("Team not found.");
@@ -67,11 +72,6 @@ router.get("/:id/history", async (req, res) => {
 router.get("/:id/challenge", requireUser, async (req, res) => {
   // TODO - Battle
   res.send();
-});
-
-router.get("/random", async (req, res) => {
-  const team = await getRandomTeam();
-  res.send(team);
 });
 
 function requireTeamOwner(req, res, next) {
