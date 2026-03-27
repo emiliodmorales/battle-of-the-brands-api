@@ -68,14 +68,14 @@ router.get("/:id/challenge", requireUser, async (req, res) => {
   res.send();
 });
 
-// In these two, remember to check if req.user id matches the team's creator's id
-router.use(function (req, res, next) {
+function requireTeamOwner(req, res, next) {
+  if (!req.team) return res.status(400).send("Team not loaded.");
   if (req.user?.id !== req.team.user_id)
     return res.status(401).send("Unauthorized");
   next();
-});
+}
 
-router.put("/:id", requireUser, async (req, res) => {
+router.put("/:id", requireUser, requireTeamOwner, async (req, res) => {
   const char = await updateTeam({
     id: req.team.id,
     userId: req.team.user_id,
@@ -84,6 +84,11 @@ router.put("/:id", requireUser, async (req, res) => {
   res.send(char);
 });
 
-router.delete("/:id", requireUser, async (req, res) => {
-  await deleteTeam(req.team.id).then(() => res.status(204).send());
+router.delete("/:id", requireUser, requireTeamOwner, async (req, res, next) => {
+  try {
+    await deleteTeam(req.team.id);
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
 });
