@@ -110,7 +110,7 @@ router.get("/:id", async (req, res) => {
 
 router.get("/:id/history", async (req, res) => {
   const history = await getUserHistory(req.aboutUser.id);
-  res.send(history);
+  res.send(history || {});
 });
 
 router.get("/:id/teams", async (req, res) => {
