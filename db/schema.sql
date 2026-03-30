@@ -35,7 +35,7 @@ CREATE TABLE
   "abilities" (
     "id" SMALLSERIAL PRIMARY KEY NOT NULL,
     "cost" INTEGER NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
+    "name" VARCHAR(255) UNIQUE NOT NULL,
     "description" VARCHAR(255) NOT NULL
   );
 
